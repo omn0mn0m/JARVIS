@@ -1,0 +1,23 @@
+WHILE program is running
+
+    Listen for user input
+    IF has user input THEN
+    
+        IF pre-programmed action THEN
+        
+            Attempt to run the action.
+        
+        ELSEIF searchable on Wolfram Alpha THEN
+        
+            Return the search result on Wolfram Alpha on screen
+            Begin reading the results
+        
+        ELSE
+        
+            Say that JARVIS does not understand
+        
+        ENDIF
+    
+    ENDIF
+
+ENDWHILE
