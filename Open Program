@@ -1,0 +1,22 @@
+IF program exists in directory THEN
+
+    Execute the program.
+
+ELSE
+
+    Return that the program cannot be found.
+    Ask if user wants to look for the program manually to remember a future path.
+    IF yes THEN
+    
+        Open explorer and wait for the user to type in or find the path.
+        Save the path in a file with all user-determined paths.
+        Open the program.
+        
+    ELSE
+    
+        Say "okay".
+        End command.
+        
+    ENDIF
+    
+ENDIF
