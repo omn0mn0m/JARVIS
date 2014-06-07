@@ -1,7 +1,12 @@
 WHILE program is running
 
     Listen for user input
+    
     IF has user input THEN
+    
+        Set INPUT to input value.
+        Split INPUT into an array of words.
+        Parse array of words.
     
         IF pre-programmed action THEN
         
