@@ -1,0 +1,11 @@
+Load list of remembered command groups.
+
+IF input is a remembered command group THEN
+
+    FOR commands in the group
+    
+        Use command at interval for the input.
+    
+    ENDFOR
+
+ENDIF
