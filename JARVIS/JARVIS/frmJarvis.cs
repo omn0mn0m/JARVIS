@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace JARVIS
 {
-    public partial class Form1 : Form
+    public partial class frmJarvis : Form
     {
-        public Form1()
+        public frmJarvis()
         {
             InitializeComponent();
+        }
+
+        private void txtInput_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
