@@ -19,6 +19,9 @@ namespace JARVIS
         // Text to Speech
         private SpeechSynthesizer speech = new SpeechSynthesizer();
 
+        // Array for input
+        private String[] inputArray;
+
         public frmJarvis()
         {
             // Loads the form components
@@ -45,9 +48,7 @@ namespace JARVIS
         public void recognition_SpeechRecognised(object sender, SpeechRecognizedEventArgs e)
         {
             // Writes the recognised text to the input text field and outputs it to the output text field
-            txtInput.Text = e.Result.Text;
-            writeToOutput("USER: " + txtInput.Text);
-            txtInput.Clear();
+            receiveInput(e.Result.Text);
         }
 
         // Runs when the form is loaded
@@ -76,8 +77,15 @@ namespace JARVIS
         private void btnInput_Click(object sender, EventArgs e)
         {
             // Outputs the user input to the output text field
-            writeToOutput("USER: " + txtInput.Text);
+            receiveInput(txtInput.Text);
             txtInput.Clear();
+        }
+
+        // Takes in the input, outputs it, and turns it into an array for processing
+        public void receiveInput(String input)
+        {
+            writeToOutput("USER: " + input);
+            inputArray = input.Split(' ');
         }
     }
 }
