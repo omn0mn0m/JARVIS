@@ -10,3 +10,4 @@ C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\JARVIS\obj\Debug\JARVIS.pdb
 C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\obj\Debug\JARVIS.exe
 C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\obj\Debug\JARVIS.pdb
 C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\JARVIS\obj\Debug\JARVIS.frmJarvis.resources
+C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\JARVIS\bin\Debug\ChatterBotAPI.dll
