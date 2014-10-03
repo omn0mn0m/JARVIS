@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using ChatterBotAPI;    // https://code.google.com/p/chatter-bot-api/
 
-namespace JARVIS
+namespace JARVIS.Util
 {
     class Converser
     {
         // Declares a class to construct chatterbots
-        private const ChatterBotFactory FACTORY = new ChatterBotFactory();
+        private ChatterBotFactory FACTORY = new ChatterBotFactory();
 
         // Declares a chatterbot for JARVIS to use
         private ChatterBot chatterbot;

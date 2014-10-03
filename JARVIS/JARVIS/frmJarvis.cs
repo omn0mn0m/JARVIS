@@ -9,6 +9,7 @@ using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using JARVIS.Util;
 
 namespace JARVIS
 {
@@ -52,6 +53,7 @@ namespace JARVIS
         {
             // Writes the recognised text to the input text field and outputs it to the output text field
             ReceiveInput(e.Result.Text);
+            Converse();
         }
 
         // Runs when the form is loaded
