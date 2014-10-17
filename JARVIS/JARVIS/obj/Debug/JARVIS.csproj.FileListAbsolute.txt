@@ -2,7 +2,6 @@ C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\JARVIS\bin\Debug\JARVIS.exe.config
 C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\bin\Debug\JARVIS.exe.config
 C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\JARVIS\bin\Debug\JARVIS.exe
 C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\JARVIS\bin\Debug\JARVIS.pdb
-C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\JARVIS\obj\Debug\JARVIS.csprojResolveAssemblyReference.cache
 C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\JARVIS\obj\Debug\JARVIS.Properties.Resources.resources
 C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\JARVIS\obj\Debug\JARVIS.csproj.GenerateResource.Cache
 C:\Users\Owner\Documents\GitHub\JARVIS\JARVIS\JARVIS\obj\Debug\JARVIS.exe

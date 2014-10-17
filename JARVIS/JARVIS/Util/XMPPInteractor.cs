@@ -73,5 +73,10 @@ namespace JARVIS.Util
             p.Type = PresenceType.available;
             xmpp.Send(p);
         }
+
+        public void Close()
+        {
+            xmpp.Close();
+        }
     }
 }
