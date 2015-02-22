@@ -17,9 +17,13 @@ namespace JARVIS
     public partial class frmJarvis : Form
     {
         // Speech recognition engine w/ US English as the langauge
-        private SpeechRecognitionEngine recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));
+        private SpeechRecognitionEngine recognition;
         // Text to Speech
         private SpeechSynthesizer speech = new SpeechSynthesizer();
+        // If speech recognition should be used
+        private bool useRecognition = true;
+        // If JARVIS should speak
+        private bool useSpeech = true;
 
         // Array for input
         private String[] inputArray;
@@ -49,8 +53,11 @@ namespace JARVIS
         // Makes JARVIS say something with text to speech as well as prints it to the console
         public void Say(String message)
         {
-            // Reads the message as speech
-            speech.Speak(message);
+            if (useSpeech)
+            {
+                // Reads the message as speech
+                speech.Speak(message);
+            }
             // Writes the message to the output text field
             WriteToOutput("JARVIS: " + message);
         }
@@ -72,6 +79,8 @@ namespace JARVIS
             grammar.Name = "Default Grammar";
             grammar.Enabled = true;
 
+            // Loads speech recognition
+            recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));
             // Loads the grammar to the speech recognition engine
             recognition.LoadGrammarAsync(grammar);
 
@@ -82,8 +91,7 @@ namespace JARVIS
             // Begins a recognition thread
             recognition.RecognizeAsync(RecognizeMode.Multiple);
 
-            // Message to confirm that JARVIS has been loaded
-            Say("I have been fully loaded, sir.");
+            Say("I have been fully loaded.");
         }
 
         // Runs when the "Read" button is clicked or the ENTER key is pressed
@@ -92,6 +100,8 @@ namespace JARVIS
             // Outputs the user input to the output text field
             ReceiveInput(txtInput.Text);
             txtInput.Clear();
+            Converse();
+            InterpretInput();
         }
 
         // Takes in the input, outputs it, and turns it into an array for processing
@@ -238,6 +248,24 @@ namespace JARVIS
                     break;
                 }
             }
+        }
+
+        private void cbRecognise_CheckedChanged(object sender, EventArgs e)
+        {
+            useRecognition = !cbRecognise.Checked;
+            if (useRecognition)
+            {
+                recognition.RecognizeAsync(RecognizeMode.Multiple);
+            }
+            else
+            {
+                recognition.RecognizeAsyncCancel();
+            }
+        }
+
+        private void cbSynthesis_CheckedChanged(object sender, EventArgs e)
+        {
+            useSpeech = !cbSynthesis.Checked;
         }
     }
 }
