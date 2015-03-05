@@ -28,55 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnSettings = new System.Windows.Forms.Button();
-            this.txtInput = new System.Windows.Forms.TextBox();
-            this.txtOutput = new System.Windows.Forms.TextBox();
-            this.btnInput = new System.Windows.Forms.Button();
             this.cbRecognise = new System.Windows.Forms.CheckBox();
             this.cbSynthesis = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.btnInput = new System.Windows.Forms.Button();
+            this.txtInput = new System.Windows.Forms.TextBox();
+            this.txtOutput = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnSettings
-            // 
-            this.btnSettings.Location = new System.Drawing.Point(595, 12);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(87, 27);
-            this.btnSettings.TabIndex = 0;
-            this.btnSettings.Text = "Settings";
-            this.btnSettings.UseVisualStyleBackColor = true;
-            // 
-            // txtInput
-            // 
-            this.txtInput.BackColor = System.Drawing.Color.MediumBlue;
-            this.txtInput.ForeColor = System.Drawing.Color.White;
-            this.txtInput.Location = new System.Drawing.Point(12, 480);
-            this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(496, 20);
-            this.txtInput.TabIndex = 1;
-            // 
-            // txtOutput
-            // 
-            this.txtOutput.BackColor = System.Drawing.Color.MediumBlue;
-            this.txtOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOutput.ForeColor = System.Drawing.Color.White;
-            this.txtOutput.Location = new System.Drawing.Point(12, 12);
-            this.txtOutput.Multiline = true;
-            this.txtOutput.Name = "txtOutput";
-            this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtOutput.Size = new System.Drawing.Size(577, 462);
-            this.txtOutput.TabIndex = 2;
-            // 
-            // btnInput
-            // 
-            this.btnInput.Location = new System.Drawing.Point(514, 478);
-            this.btnInput.Name = "btnInput";
-            this.btnInput.Size = new System.Drawing.Size(75, 23);
-            this.btnInput.TabIndex = 3;
-            this.btnInput.Text = "Read";
-            this.btnInput.UseVisualStyleBackColor = true;
-            this.btnInput.Click += new System.EventHandler(this.btnInput_Click);
             // 
             // cbRecognise
             // 
@@ -114,13 +74,53 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Disable";
             // 
+            // btnSettings
+            // 
+            this.btnSettings.Location = new System.Drawing.Point(595, 12);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(87, 27);
+            this.btnSettings.TabIndex = 0;
+            this.btnSettings.Text = "Settings";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            // 
+            // btnInput
+            // 
+            this.btnInput.Location = new System.Drawing.Point(514, 478);
+            this.btnInput.Name = "btnInput";
+            this.btnInput.Size = new System.Drawing.Size(75, 23);
+            this.btnInput.TabIndex = 3;
+            this.btnInput.Text = "Read";
+            this.btnInput.UseVisualStyleBackColor = true;
+            this.btnInput.Click += new System.EventHandler(this.btnInput_Click);
+            // 
+            // txtInput
+            // 
+            this.txtInput.BackColor = System.Drawing.Color.MediumBlue;
+            this.txtInput.ForeColor = System.Drawing.Color.White;
+            this.txtInput.Location = new System.Drawing.Point(12, 480);
+            this.txtInput.Name = "txtInput";
+            this.txtInput.Size = new System.Drawing.Size(496, 20);
+            this.txtInput.TabIndex = 1;
+            // 
+            // txtOutput
+            // 
+            this.txtOutput.BackColor = System.Drawing.Color.MediumBlue;
+            this.txtOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOutput.ForeColor = System.Drawing.Color.White;
+            this.txtOutput.Location = new System.Drawing.Point(12, 12);
+            this.txtOutput.Multiline = true;
+            this.txtOutput.Name = "txtOutput";
+            this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtOutput.Size = new System.Drawing.Size(577, 462);
+            this.txtOutput.TabIndex = 2;
+            // 
             // frmJarvis
             // 
             this.AcceptButton = this.btnInput;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkBlue;
-            this.ClientSize = new System.Drawing.Size(707, 512);
+            this.ClientSize = new System.Drawing.Size(707, 511);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnInput);
             this.Controls.Add(this.txtOutput);
@@ -138,13 +138,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnSettings;
-        private System.Windows.Forms.TextBox txtInput;
-        private System.Windows.Forms.TextBox txtOutput;
-        private System.Windows.Forms.Button btnInput;
         private System.Windows.Forms.CheckBox cbRecognise;
         private System.Windows.Forms.CheckBox cbSynthesis;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Button btnInput;
+        private System.Windows.Forms.TextBox txtInput;
+        private System.Windows.Forms.TextBox txtOutput;
     }
 }
 
