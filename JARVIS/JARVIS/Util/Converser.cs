@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ChatterBotAPI;        // https://code.google.com/p/chatter-bot-api/
+using ChatterBotAPI;                // https://code.google.com/p/chatter-bot-api/
+using System.Threading;
 
 namespace JARVIS.Util
 {

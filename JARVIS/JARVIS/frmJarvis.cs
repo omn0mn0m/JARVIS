@@ -16,31 +16,29 @@ namespace JARVIS
 {
     public partial class frmJarvis : Form
     {
-        // Speech recognition engine w/ US English as the langauge
-        private SpeechRecognitionEngine recognition;
-        // Text to Speech
-        private SpeechSynthesizer speech = new SpeechSynthesizer();
-        // If speech recognition should be used
-        private bool useRecognition = true;
-        // If JARVIS should speak
-        private bool useSpeech = true;
+        private SpeechRecognitionEngine recognition;                        // Speech recognition engine w/ US English as the langauge
+        private SpeechSynthesizer speech = new SpeechSynthesizer();         // Text to Speech
 
-        // Array for input
-        private String[] inputArray;
+        private bool useRecognition = true;             // If speech recognition should be used
+        private bool useSpeech = true;                  // If JARVIS should speak
 
-        // Array for last command stated
-        private String[] lastCommand;
+        private String[] inputArray;                    // Array for input
+        private String[] lastCommand;                   // Array for last command stated
+        private Converser converser = new Converser();          // Converser for casual conversation with user
 
-        // Converser for casual conversation with user
-        Converser converser = new Converser();
+        private XMPPInteractor facebookInteract;                // XMPP interactor for Facebook
 
-        // XMPP interactor for Facebook
-        XMPPInteractor facebookInteract;
+        private BackgroundWorker bwGetResponse = new BackgroundWorker();
 
         public frmJarvis()
         {
-            // Loads the form components
-            InitializeComponent();
+            bwGetResponse.DoWork += new DoWorkEventHandler(bwGetResponse_DoWork);
+            bwGetResponse.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bwGetReponse_RunWorkerCompleted);
+            bwGetResponse.ProgressChanged += new ProgressChangedEventHandler(bwGetResponse_ProgressChanged);
+            bwGetResponse.WorkerReportsProgress = true;
+            bwGetResponse.WorkerSupportsCancellation = true;
+
+            InitializeComponent();      // Loads the form components
         }
 
         // Writes a message to the text output field with a date/time stamp and the message 
@@ -55,11 +53,9 @@ namespace JARVIS
         {
             if (useSpeech)
             {
-                // Reads the message as speech
-                speech.Speak(message);
+                speech.Speak(message);                   // Reads the message as speech
             }
-            // Writes the message to the output text field
-            WriteToOutput("JARVIS: " + message);
+            WriteToOutput("JARVIS: " + message);        // Writes the message to the output text field
         }
 
         // Event handler for when speech is recognised
@@ -67,7 +63,12 @@ namespace JARVIS
         {
             // Writes the recognised text to the input text field and outputs it to the output text field
             ReceiveInput(e.Result.Text);
-            Converse();
+
+            if (!bwGetResponse.IsBusy)
+            {
+                bwGetResponse.RunWorkerAsync(e.Result.Text);
+            }
+
             InterpretInput();
         }
 
@@ -98,9 +99,15 @@ namespace JARVIS
         private void btnInput_Click(object sender, EventArgs e)
         {
             // Outputs the user input to the output text field
-            ReceiveInput(txtInput.Text);
+            string input = txtInput.Text;
             txtInput.Clear();
-            Converse();
+            ReceiveInput(input);
+            
+            if (!bwGetResponse.IsBusy)
+            {
+                bwGetResponse.RunWorkerAsync(input);
+            }
+
             InterpretInput();
         }
 
@@ -109,18 +116,6 @@ namespace JARVIS
         {
             WriteToOutput("USER: " + input);
             inputArray = input.Split(' ');
-        }
-
-        public void Converse()
-        {
-            String input = "";
-
-            for (int i = 0; i < inputArray.Length; i++)
-            {
-                input = input + inputArray[i];
-            }
-
-            Say(converser.Respond(input));
         }
 
         public void InterpretInput()
@@ -266,6 +261,37 @@ namespace JARVIS
         private void cbSynthesis_CheckedChanged(object sender, EventArgs e)
         {
             useSpeech = !cbSynthesis.Checked;
+        }
+
+        private void bwGetResponse_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            // TODO: Add something here
+        }
+
+        private void bwGetReponse_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (!e.Cancelled && (e.Error == null))
+            {
+                string response = (string)e.Result;
+                Say(response);
+            }
+            else if (e.Cancelled)
+            {
+                Say("User Cancelled");
+            }
+            else
+            {
+                Say("An error has occured");
+            }
+        }
+
+        private void bwGetResponse_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker sendingWorker = (BackgroundWorker)sender;
+            string input = (string)e.Argument;
+
+            Converser converser = new Converser();
+            e.Result = converser.Respond(input);
         }
     }
 }
