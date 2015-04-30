@@ -18,6 +18,7 @@ namespace JARVIS.Util
 
         // Declares a chat session for the chatterbot to use
         private ChatterBotSession chatSession;
+        private List<ChatterBotSession> chatSessionList;
 
         // Different chatterbots
         private const ChatterBotType CLEVERBOT = ChatterBotType.CLEVERBOT;
@@ -31,11 +32,20 @@ namespace JARVIS.Util
 
             // Creates the chat sessions for each bot
             chatSession = chatterbot.CreateSession();
+            chatSessionList = new List<ChatterBotSession>();
+            chatSessionList.Add(chatSession);
         }
 
         public String Respond(String input)
         {
-            return chatSession.Think(input);
+            try
+            {
+                return chatSession.Think(input);
+            }
+            catch (Exception)
+            {
+                return "Durrrr";
+            }
         }
     }
 }

@@ -30,6 +30,8 @@ namespace JARVIS
 
         private BackgroundWorker bwGetResponse = new BackgroundWorker();
 
+        private PCManager pcManager = new PCManager();           // Manages system tasks
+
         public frmJarvis()
         {
             bwGetResponse.DoWork += new DoWorkEventHandler(bwGetResponse_DoWork);
@@ -139,12 +141,13 @@ namespace JARVIS
                                         switch (inputArray[j])
                                         {
                                             case "notepad":
-                                                System.Diagnostics.Process.Start("notepad.exe");
+                                                pcManager.OpenProgram("notepad");
                                                 found = true;
                                                 command = true;
                                                 lastCommand = "open notepad".Split(' ');
                                                 break;
                                             default:
+                                                pcManager.SearchAndOpen(inputArray[j]);
                                                 break;
                                         }
                                     }
@@ -202,11 +205,7 @@ namespace JARVIS
                                                     switch (lastCommand[k])
                                                     {
                                                         case "notepad":
-                                                            foreach (Process proc in Process.GetProcessesByName("Notepad"))
-                                                            {
-                                                                proc.CloseMainWindow();
-                                                                proc.WaitForExit();
-                                                            }
+                                                            pcManager.CloseAllProgramInstances("Notepad");
                                                             found = true;
                                                             command = true;
                                                             break;
