@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using JARVIS.Util;
+using FaceTracking;
 using System.Diagnostics;
 
 namespace JARVIS
@@ -31,6 +32,8 @@ namespace JARVIS
         private BackgroundWorker bwGetResponse = new BackgroundWorker();
 
         private PCManager pcManager = new PCManager();           // Manages system tasks
+
+        private FaceTracking.MainForm faceTracking = new FaceTracking.MainForm();
 
         public frmJarvis()
         {
@@ -93,6 +96,8 @@ namespace JARVIS
             recognition.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(Recognition_SpeechRecognised);
             // Begins a recognition thread
             recognition.RecognizeAsync(RecognizeMode.Multiple);
+
+            faceTracking.Show();
 
             Say("I have been fully loaded.");
         }

@@ -94,7 +94,12 @@
     <Content Include="Libraries\agsXMPP.dll" />
     <Content Include="Libraries\ChatterBotAPI.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Accord Vision Face Tracking\Face tracking %28Camshift%29.csproj">
+      <Project>{03cccd6c-ca56-4cae-a0a5-1c9660d9424b}</Project>
+      <Name>Face tracking %28Camshift%29</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
