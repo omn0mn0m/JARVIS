@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Speech.Recognition;
-using System.Speech.Synthesis;
+
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,11 +17,8 @@ namespace JARVIS
 {
     public partial class frmJarvis : Form
     {
-        private SpeechRecognitionEngine recognition;                        // Speech recognition engine w/ US English as the langauge
-        private SpeechSynthesizer speech = new SpeechSynthesizer();         // Text to Speech
-
+        private SpeechRecognitionEngine recognition;    // Speech recognition engine w/ US English as the langauge
         private bool useRecognition = true;             // If speech recognition should be used
-        private bool useSpeech = true;                  // If JARVIS should speak
 
         private String[] inputArray;                    // Array for input
         private String[] lastCommand;                   // Array for last command stated
@@ -51,16 +48,6 @@ namespace JARVIS
         {
             // Adds the new output message to a new line in the output text field
             txtOutput.AppendText(System.Environment.NewLine + "[" + System.DateTime.Now + "] " + output);
-        }
-
-        // Makes JARVIS say something with text to speech as well as prints it to the console
-        public void Say(String message)
-        {
-            if (useSpeech)
-            {
-                speech.Speak(message);                   // Reads the message as speech
-            }
-            WriteToOutput("JARVIS: " + message);        // Writes the message to the output text field
         }
 
         // Event handler for when speech is recognised
@@ -99,7 +86,7 @@ namespace JARVIS
 
             faceTracking.Show();
 
-            Say("I have been fully loaded.");
+            WriteToOutput(Converser.Say("I have been fully loaded.", recognition));
         }
 
         // Runs when the "Read" button is clicked or the ENTER key is pressed
@@ -264,7 +251,7 @@ namespace JARVIS
 
         private void cbSynthesis_CheckedChanged(object sender, EventArgs e)
         {
-            useSpeech = !cbSynthesis.Checked;
+            Converser.useSpeech = !cbSynthesis.Checked;
         }
 
         private void bwGetResponse_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -277,15 +264,15 @@ namespace JARVIS
             if (!e.Cancelled && (e.Error == null))
             {
                 string response = (string)e.Result;
-                Say(response);
+                WriteToOutput(Converser.Say(response, recognition));
             }
             else if (e.Cancelled)
             {
-                Say("User Cancelled");
+                WriteToOutput(Converser.Say("User Cancelled", recognition));
             }
             else
             {
-                Say("An error has occured");
+                WriteToOutput(Converser.Say("An error has occured", recognition));
             }
         }
 

@@ -70,6 +70,7 @@ namespace FaceTracking
             // 
             // menuMenu
             // 
+            this.menuMenu.BackColor = System.Drawing.Color.MediumBlue;
             this.menuMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.trackingToolStripMenuItem,
@@ -249,6 +250,7 @@ namespace FaceTracking
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.localVideoCaptureSettingsToolStripMenuItem});
+            this.toolsToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -272,7 +274,7 @@ namespace FaceTracking
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -288,6 +290,7 @@ namespace FaceTracking
             // 
             // statusBar
             // 
+            this.statusBar.BackColor = System.Drawing.Color.MediumBlue;
             this.statusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fpsLabel,
             this.objectsCountLabel});
@@ -313,6 +316,7 @@ namespace FaceTracking
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.objectsCountLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.objectsCountLabel.ForeColor = System.Drawing.Color.White;
             this.objectsCountLabel.Name = "objectsCountLabel";
             this.objectsCountLabel.Size = new System.Drawing.Size(267, 19);
             this.objectsCountLabel.Spring = true;
@@ -321,6 +325,7 @@ namespace FaceTracking
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.Color.DarkBlue;
             this.panel1.Controls.Add(this.videoSourcePlayer);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 24);
@@ -331,7 +336,7 @@ namespace FaceTracking
             // videoSourcePlayer
             // 
             this.videoSourcePlayer.AutoSizeControl = true;
-            this.videoSourcePlayer.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.videoSourcePlayer.BackColor = System.Drawing.Color.MediumBlue;
             this.videoSourcePlayer.ForeColor = System.Drawing.Color.White;
             this.videoSourcePlayer.Location = new System.Drawing.Point(55, 33);
             this.videoSourcePlayer.Name = "videoSourcePlayer";
