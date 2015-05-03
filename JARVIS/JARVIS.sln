@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JARVIS", "JARVIS\JARVIS.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Face tracking (Camshift)", "..\Accord Vision Face Tracking\Face tracking (Camshift).csproj", "{03CCCD6C-CA56-4CAE-A0A5-1C9660D9424B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WAWrapper", "..\WAWrapper\WAWrapper.csproj", "{ADC1C97A-6EDF-481D-9680-28D4A89747C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,16 @@ Global
 		{03CCCD6C-CA56-4CAE-A0A5-1C9660D9424B}.Release|Mixed Platforms.Build.0 = Release|x86
 		{03CCCD6C-CA56-4CAE-A0A5-1C9660D9424B}.Release|x86.ActiveCfg = Release|x86
 		{03CCCD6C-CA56-4CAE-A0A5-1C9660D9424B}.Release|x86.Build.0 = Release|x86
+		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

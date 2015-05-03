@@ -17,8 +17,9 @@ namespace JARVIS
 {
     public partial class frmJarvis : Form
     {
-        private SpeechRecognitionEngine recognition;    // Speech recognition engine w/ US English as the langauge
-        private bool useRecognition = true;             // If speech recognition should be used
+        private SpeechRecognitionEngine recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));    // Speech recognition engine w/ US English as the langauge
+        public static bool useRecognition = true;             // If speech recognition should be used
+        private static string wolframAppID = "LXA9LJ-3835YR8529";
 
         private String[] inputArray;                    // Array for input
         private String[] lastCommand;                   // Array for last command stated
@@ -32,6 +33,8 @@ namespace JARVIS
 
         private FaceTracking.MainForm faceTracking = new FaceTracking.MainForm();
 
+        private KnowledgeBase knowledgeBase = new KnowledgeBase(wolframAppID);
+
         public frmJarvis()
         {
             bwGetResponse.DoWork += new DoWorkEventHandler(bwGetResponse_DoWork);
@@ -39,6 +42,21 @@ namespace JARVIS
             bwGetResponse.ProgressChanged += new ProgressChangedEventHandler(bwGetResponse_ProgressChanged);
             bwGetResponse.WorkerReportsProgress = true;
             bwGetResponse.WorkerSupportsCancellation = true;
+
+            // Creates a grammar to understand most English sentences
+            DictationGrammar grammar = new DictationGrammar();
+            grammar.Name = "Default Grammar";
+            grammar.Enabled = true;
+
+            // Loads the grammar to the speech recognition engine
+            recognition.LoadGrammarAsync(grammar);
+
+            // Sets the recognition engine to the computer's default audio input device and starts recognising speech
+            recognition.SetInputToDefaultAudioDevice();
+            // Adds an event handler for when the speech recognition understands something was said
+            recognition.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(Recognition_SpeechRecognised);
+            // Begins a recognition thread
+            recognition.RecognizeAsync(RecognizeMode.Multiple);
 
             InitializeComponent();      // Loads the form components
         }
@@ -67,23 +85,6 @@ namespace JARVIS
         // Runs when the form is loaded
         private void frmJarvis_Load(object sender, EventArgs e)
         {
-            // Creates a grammar to understand most English sentences
-            DictationGrammar grammar = new DictationGrammar();
-            grammar.Name = "Default Grammar";
-            grammar.Enabled = true;
-
-            // Loads speech recognition
-            recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));
-            // Loads the grammar to the speech recognition engine
-            recognition.LoadGrammarAsync(grammar);
-
-            // Sets the recognition engine to the computer's default audio input device and starts recognising speech
-            recognition.SetInputToDefaultAudioDevice();
-            // Adds an event handler for when the speech recognition understands something was said
-            recognition.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(Recognition_SpeechRecognised);
-            // Begins a recognition thread
-            recognition.RecognizeAsync(RecognizeMode.Multiple);
-
             faceTracking.Show();
 
             WriteToOutput(Converser.Say("I have been fully loaded.", recognition));
@@ -263,8 +264,7 @@ namespace JARVIS
         {
             if (!e.Cancelled && (e.Error == null))
             {
-                string response = (string)e.Result;
-                WriteToOutput(Converser.Say(response, recognition));
+                WriteToOutput("JARVIS: " + (string)e.Result);
             }
             else if (e.Cancelled)
             {
@@ -283,6 +283,16 @@ namespace JARVIS
 
             Converser converser = new Converser();
             e.Result = converser.Respond(input);
+            Converser.Say((string)e.Result, recognition);
+        }
+
+        /*
+         * This is for resource clean-up when the user closes the program
+         */
+        private void frmJarvis_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            recognition.Dispose();
+            faceTracking.Close();
         }
     }
 }

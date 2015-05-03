@@ -63,6 +63,7 @@ namespace FaceTracking
             this.objectsCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.videoSourcePlayer = new AForge.Controls.VideoSourcePlayer();
+            this.useHeadControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -249,7 +250,8 @@ namespace FaceTracking
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.localVideoCaptureSettingsToolStripMenuItem});
+            this.localVideoCaptureSettingsToolStripMenuItem,
+            this.useHeadControlToolStripMenuItem});
             this.toolsToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
@@ -346,6 +348,12 @@ namespace FaceTracking
             this.videoSourcePlayer.NewFrame += new AForge.Controls.VideoSourcePlayer.NewFrameHandler(this.videoSourcePlayer_NewFrame);
             this.videoSourcePlayer.Click += new System.EventHandler(this.videoSourcePlayer_Click);
             // 
+            // useHeadControlToolStripMenuItem
+            // 
+            this.useHeadControlToolStripMenuItem.Name = "useHeadControlToolStripMenuItem";
+            this.useHeadControlToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.useHeadControlToolStripMenuItem.Text = "Use Head Control";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -357,7 +365,7 @@ namespace FaceTracking
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuMenu;
             this.Name = "MainForm";
-            this.Text = "Face Tracking";
+            this.Text = "JARVIS Vision";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.menuMenu.ResumeLayout(false);
             this.menuMenu.PerformLayout();
@@ -404,6 +412,7 @@ namespace FaceTracking
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem mixedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem useHeadControlToolStripMenuItem;
     }
 }
 

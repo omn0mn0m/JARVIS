@@ -57,6 +57,7 @@ namespace MotionDetectorSample
             // 
             // defineRegionsControl
             // 
+            this.defineRegionsControl.BackColor = System.Drawing.Color.MediumBlue;
             this.defineRegionsControl.BackgroundImage = null;
             this.defineRegionsControl.Cursor = System.Windows.Forms.Cursors.Cross;
             this.defineRegionsControl.DrawingMode = MotionDetectorSample.DrawingMode.Rectangular;
@@ -70,6 +71,7 @@ namespace MotionDetectorSample
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.DarkBlue;
             this.ClientSize = new System.Drawing.Size(342, 302);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);

@@ -23,6 +23,7 @@
 //   AForge.NET Framework
 //   http://www.aforgenet.com/framework/
 //
+// Further adapted by Nam Tran, 2015
 
 using Accord.Imaging.Filters;
 using Accord.Vision.Detection;
@@ -94,8 +95,6 @@ namespace FaceTracking
         {
             this.Close();
         }
-
-
 
         // "Open" menu item click - open AVI file
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -255,7 +254,6 @@ namespace FaceTracking
             this.Cursor = Cursors.Default;
         }
 
-
         // New frame received by the player
         private void videoSourcePlayer_NewFrame(object sender, ref Bitmap image)
         {
@@ -372,8 +370,6 @@ namespace FaceTracking
             }
         }
 
-
-
         // On timer event - gather statistics
         private void timer_Tick(object sender, EventArgs e)
         {
@@ -405,10 +401,6 @@ namespace FaceTracking
             }
         }
 
-
-
-
-
         // On opening of Tools menu
         private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
@@ -432,8 +424,6 @@ namespace FaceTracking
                 }
             }
         }
-
-
 
         private void videoSourcePlayer_Click(object sender, EventArgs e)
         {

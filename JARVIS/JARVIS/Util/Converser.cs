@@ -67,14 +67,19 @@ namespace JARVIS.Util
         {
             if (useSpeech)
             {
-                recognition.RecognizeAsyncCancel();
+                if (frmJarvis.useRecognition) {
+                    recognition.RecognizeAsyncCancel();
+                }
                 speech.Speak(message);                   // Reads the message as speech
 
-                try
+                if (frmJarvis.useRecognition)
                 {
-                    recognition.RecognizeAsync(RecognizeMode.Multiple);
+                    try
+                    {
+                        recognition.RecognizeAsync(RecognizeMode.Multiple);
+                    }
+                    catch (InvalidOperationException) { }
                 }
-                catch (InvalidOperationException) { }
             }
 
             return ("JARVIS: " + message);        // Writes the message to the output text field

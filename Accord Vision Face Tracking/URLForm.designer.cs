@@ -28,59 +28,68 @@ namespace FaceTracking
         /// </summary>
         private void InitializeComponent( )
         {
-            this.urlBox = new System.Windows.Forms.ComboBox( );
-            this.cancelButton = new System.Windows.Forms.Button( );
-            this.okButton = new System.Windows.Forms.Button( );
-            this.descriptionLabel = new System.Windows.Forms.Label( );
-            this.SuspendLayout( );
+            this.urlBox = new System.Windows.Forms.ComboBox();
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.okButton = new System.Windows.Forms.Button();
+            this.descriptionLabel = new System.Windows.Forms.Label();
+            this.SuspendLayout();
             // 
             // urlBox
             // 
+            this.urlBox.BackColor = System.Drawing.Color.MediumBlue;
+            this.urlBox.ForeColor = System.Drawing.Color.White;
             this.urlBox.FormattingEnabled = true;
-            this.urlBox.Location = new System.Drawing.Point( 10, 35 );
+            this.urlBox.Location = new System.Drawing.Point(10, 35);
             this.urlBox.Name = "urlBox";
-            this.urlBox.Size = new System.Drawing.Size( 325, 21 );
+            this.urlBox.Size = new System.Drawing.Size(325, 21);
             this.urlBox.TabIndex = 0;
             // 
             // cancelButton
             // 
+            this.cancelButton.BackColor = System.Drawing.Color.MediumBlue;
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelButton.Location = new System.Drawing.Point( 180, 80 );
+            this.cancelButton.ForeColor = System.Drawing.Color.White;
+            this.cancelButton.Location = new System.Drawing.Point(180, 80);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size( 75, 23 );
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 5;
             this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = false;
             // 
             // okButton
             // 
+            this.okButton.BackColor = System.Drawing.Color.MediumBlue;
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.okButton.Location = new System.Drawing.Point( 90, 80 );
+            this.okButton.ForeColor = System.Drawing.Color.White;
+            this.okButton.Location = new System.Drawing.Point(90, 80);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size( 75, 23 );
+            this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 4;
             this.okButton.Text = "Ok";
-            this.okButton.Click += new System.EventHandler( this.okButton_Click );
+            this.okButton.UseVisualStyleBackColor = false;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // descriptionLabel
             // 
-            this.descriptionLabel.Location = new System.Drawing.Point( 10, 10 );
+            this.descriptionLabel.Location = new System.Drawing.Point(10, 10);
             this.descriptionLabel.Name = "descriptionLabel";
-            this.descriptionLabel.Size = new System.Drawing.Size( 325, 13 );
+            this.descriptionLabel.Size = new System.Drawing.Size(325, 13);
             this.descriptionLabel.TabIndex = 6;
             // 
             // URLForm
             // 
             this.AcceptButton = this.okButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.DarkBlue;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size( 344, 116 );
-            this.Controls.Add( this.descriptionLabel );
-            this.Controls.Add( this.cancelButton );
-            this.Controls.Add( this.okButton );
-            this.Controls.Add( this.urlBox );
+            this.ClientSize = new System.Drawing.Size(344, 116);
+            this.Controls.Add(this.descriptionLabel);
+            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.okButton);
+            this.Controls.Add(this.urlBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -88,7 +97,7 @@ namespace FaceTracking
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Open URL";
-            this.ResumeLayout( false );
+            this.ResumeLayout(false);
 
         }
 
