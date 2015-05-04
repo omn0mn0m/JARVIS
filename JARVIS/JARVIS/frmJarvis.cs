@@ -110,7 +110,19 @@ namespace JARVIS
         public void ReceiveInput(String input)
         {
             WriteToOutput("USER: " + input);
-            inputArray = input.Split(' ');
+            inputArray = input.ToLower().Split(' ');
+        }
+
+        public string GetInputPastPoint(int point)
+        {
+            string result = "";
+
+            for (int i = point; i < inputArray.Length; i++)
+            {
+                result = result + " " + inputArray[i];
+            }
+
+            return result;
         }
 
         public void InterpretInput()
@@ -122,6 +134,10 @@ namespace JARVIS
                 {
                     switch (inputArray[i])
                     {
+                        case "who": case "what": case "when": case "where": case "why": case "how":
+                            knowledgeBase.SendQuery(GetInputPastPoint(i));
+                            WriteToOutput(Converser.Say(knowledgeBase.GetResult(), recognition));
+                            break;
                         case "open":
                             if (!command)
                             {
