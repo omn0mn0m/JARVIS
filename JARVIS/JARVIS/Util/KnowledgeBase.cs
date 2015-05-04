@@ -32,7 +32,28 @@ namespace JARVIS.Util
             result = engine.RunQuery(query);
         }
 
-        public List<string> getPods() {
+        public string GetResult()
+        {
+            string result = "No result found";
+
+            foreach (var pod in this.result.Pods)
+            {
+                if (pod.Title.Equals("Result")) 
+                {
+                    foreach (var subpod in pod.SubPods)
+                    {
+                        if (string.IsNullOrEmpty(subpod.Title) && !string.IsNullOrEmpty(subpod.PlainText))
+                        {
+                            result = subpod.PlainText;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public List<string> GetPods() {
             List<string> pods = new List<string>();
             
             foreach (var pod in result.Pods)
@@ -43,7 +64,7 @@ namespace JARVIS.Util
             return pods;
         }
 
-        public Dictionary<string, string> getSubpodsInPod(WAPod pod)
+        public Dictionary<string, string> GetSubpodsInPod(WAPod pod)
         {
             Dictionary<string, string> subpods = new Dictionary<string, string>();
 
@@ -66,7 +87,7 @@ namespace JARVIS.Util
             return subpods;
         }
 
-        public List<string> getSources()
+        public List<string> GetSources()
         {
             List<string> sources = new List<string>();
 
