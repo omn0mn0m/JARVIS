@@ -24,6 +24,7 @@ namespace JARVIS
         private String[] inputArray;                    // Array for input
         private String[] lastCommand;                   // Array for last command stated
         private Converser converser = new Converser();          // Converser for casual conversation with user
+        private bool useConverser = true;                                                           
 
         private XMPPInteractor facebookInteract;                // XMPP interactor for Facebook
 
@@ -102,8 +103,6 @@ namespace JARVIS
             {
                 bwGetResponse.RunWorkerAsync(input);
             }
-
-            InterpretInput();
         }
 
         // Takes in the input, outputs it, and turns it into an array for processing
@@ -135,8 +134,8 @@ namespace JARVIS
                     switch (inputArray[i])
                     {
                         case "who": case "what": case "when": case "where": case "why": case "how":
+                            useConverser = false;
                             knowledgeBase.SendQuery(GetInputPastPoint(i));
-                            WriteToOutput(Converser.Say(knowledgeBase.GetResult(), recognition));
                             break;
                         case "open":
                             if (!command)
@@ -280,7 +279,29 @@ namespace JARVIS
         {
             if (!e.Cancelled && (e.Error == null))
             {
-                WriteToOutput("JARVIS: " + (string)e.Result);
+                string result;
+
+                if (useConverser)
+                {
+                    result = (string)e.Result;
+                }
+                else
+                {
+                    string wolframResult = knowledgeBase.GetResult();
+                    if (wolframResult.Equals("No result found"))
+                    {
+                        result = (string)e.Result;
+                    }
+                    else
+                    {
+                        result = wolframResult;
+                    }
+
+                    useConverser = true;
+                }
+
+                WriteToOutput("JARVIS: " + result);
+                Converser.Say(result, recognition);
             }
             else if (e.Cancelled)
             {
@@ -297,9 +318,9 @@ namespace JARVIS
             BackgroundWorker sendingWorker = (BackgroundWorker)sender;
             string input = (string)e.Argument;
 
-            Converser converser = new Converser();
+            InterpretInput();
+
             e.Result = converser.Respond(input);
-            Converser.Say((string)e.Result, recognition);
         }
 
         /*

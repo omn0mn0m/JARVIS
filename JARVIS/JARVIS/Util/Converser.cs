@@ -58,7 +58,7 @@ namespace JARVIS.Util
         {
             if (useSpeech)
             {
-                speech.SpeakAsync(message);                   // Reads the message as speech
+                speech.Speak(message);                   // Reads the message as speech
             }
             return ("JARVIS: " + message);        // Writes the message to the output text field
         }

@@ -34,11 +34,44 @@ namespace JARVIS.Util
 
         public void SearchAndOpen(string name)
         {
+            bool foundProgram = false;
+
             foreach (string d in Directory.GetDirectories(programDirectory64))
             {
-                foreach (string f in Directory.GetFiles(d, name + ".exe"))
+                try
                 {
-                    System.Diagnostics.Process.Start(f);
+                    foreach (string f in Directory.GetFiles(d, name + ".exe"))
+                    {
+                        System.Diagnostics.Process.Start(f);
+                        foundProgram = true;
+                    }
+                }
+                catch (System.UnauthorizedAccessException) { }
+
+                if (foundProgram)
+                {
+                    break;
+                }
+            }
+
+            if (!foundProgram)
+            {
+                foreach (string d in Directory.GetDirectories(programDirectory32))
+                {
+                    try
+                    {
+                        foreach (string f in Directory.GetFiles(d, name + ".exe"))
+                        {
+                            System.Diagnostics.Process.Start(f);
+                            foundProgram = true;
+                        }
+                    }
+                    catch (System.UnauthorizedAccessException) { }
+
+                    if (foundProgram)
+                    {
+                        break;
+                    }
                 }
             }
         }
