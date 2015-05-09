@@ -155,6 +155,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NeuralNetwork\Neuron.cs" />
     <Compile Include="Util\Converser.cs" />
     <Compile Include="frmJarvis.cs">
       <SubType>Form</SubType>
