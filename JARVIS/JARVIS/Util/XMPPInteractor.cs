@@ -53,6 +53,8 @@ namespace JARVIS.Util
                 jarvisConversation.Add(to, new Converser());
             }
 
+            Converser converser;
+            jarvisConversation.TryGetValue(to, out converser);
 
             string s = converser.Respond(a);
 
