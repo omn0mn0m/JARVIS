@@ -5,30 +5,38 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Speech.Recognition;
-using System.Speech.Synthesis;
+
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using JARVIS.Util;
+using FaceTracking;
 using System.Diagnostics;
 
 namespace JARVIS
 {
     public partial class frmJarvis : Form
     {
-        private SpeechRecognitionEngine recognition;                        // Speech recognition engine w/ US English as the langauge
-        private SpeechSynthesizer speech = new SpeechSynthesizer();         // Text to Speech
-
-        private bool useRecognition = true;             // If speech recognition should be used
-        private bool useSpeech = true;                  // If JARVIS should speak
+        private SpeechRecognitionEngine recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));    // Speech recognition engine w/ US English as the langauge
+        public static bool useRecognition = true;             // If speech recognition should be used
+        private static string wolframAppID = "LXA9LJ-3835YR8529";
 
         private String[] inputArray;                    // Array for input
         private String[] lastCommand;                   // Array for last command stated
         private Converser converser = new Converser();          // Converser for casual conversation with user
+        private bool useConverser = true;                                                           
 
         private XMPPInteractor facebookInteract;                // XMPP interactor for Facebook
 
         private BackgroundWorker bwGetResponse = new BackgroundWorker();
+
+        private PCManager pcManager = new PCManager();           // Manages system tasks
+
+        private OfficeManager officeManager = new OfficeManager();
+
+        private FaceTracking.MainForm faceTracking = new FaceTracking.MainForm();
+
+        private KnowledgeBase knowledgeBase = new KnowledgeBase(wolframAppID);
 
         public frmJarvis()
         {
@@ -38,6 +46,21 @@ namespace JARVIS
             bwGetResponse.WorkerReportsProgress = true;
             bwGetResponse.WorkerSupportsCancellation = true;
 
+            // Creates a grammar to understand most English sentences
+            DictationGrammar grammar = new DictationGrammar();
+            grammar.Name = "Default Grammar";
+            grammar.Enabled = true;
+
+            // Loads the grammar to the speech recognition engine
+            recognition.LoadGrammarAsync(grammar);
+
+            // Sets the recognition engine to the computer's default audio input device and starts recognising speech
+            recognition.SetInputToDefaultAudioDevice();
+            // Adds an event handler for when the speech recognition understands something was said
+            recognition.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(Recognition_SpeechRecognised);
+            // Begins a recognition thread
+            recognition.RecognizeAsync(RecognizeMode.Multiple);
+
             InitializeComponent();      // Loads the form components
         }
 
@@ -46,16 +69,6 @@ namespace JARVIS
         {
             // Adds the new output message to a new line in the output text field
             txtOutput.AppendText(System.Environment.NewLine + "[" + System.DateTime.Now + "] " + output);
-        }
-
-        // Makes JARVIS say something with text to speech as well as prints it to the console
-        public void Say(String message)
-        {
-            if (useSpeech)
-            {
-                speech.Speak(message);                   // Reads the message as speech
-            }
-            WriteToOutput("JARVIS: " + message);        // Writes the message to the output text field
         }
 
         // Event handler for when speech is recognised
@@ -75,24 +88,9 @@ namespace JARVIS
         // Runs when the form is loaded
         private void frmJarvis_Load(object sender, EventArgs e)
         {
-            // Creates a grammar to understand most English sentences
-            DictationGrammar grammar = new DictationGrammar();
-            grammar.Name = "Default Grammar";
-            grammar.Enabled = true;
+            faceTracking.Show();
 
-            // Loads speech recognition
-            recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));
-            // Loads the grammar to the speech recognition engine
-            recognition.LoadGrammarAsync(grammar);
-
-            // Sets the recognition engine to the computer's default audio input device and starts recognising speech
-            recognition.SetInputToDefaultAudioDevice();
-            // Adds an event handler for when the speech recognition understands something was said
-            recognition.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(Recognition_SpeechRecognised);
-            // Begins a recognition thread
-            recognition.RecognizeAsync(RecognizeMode.Multiple);
-
-            Say("I have been fully loaded.");
+            WriteToOutput(Converser.Say("I have been fully loaded.", recognition));
         }
 
         // Runs when the "Read" button is clicked or the ENTER key is pressed
@@ -107,15 +105,25 @@ namespace JARVIS
             {
                 bwGetResponse.RunWorkerAsync(input);
             }
-
-            InterpretInput();
         }
 
         // Takes in the input, outputs it, and turns it into an array for processing
         public void ReceiveInput(String input)
         {
             WriteToOutput("USER: " + input);
-            inputArray = input.Split(' ');
+            inputArray = input.ToLower().Split(' ');
+        }
+
+        public string GetInputPastPoint(int point)
+        {
+            string result = "";
+
+            for (int i = point; i < inputArray.Length; i++)
+            {
+                result = result + " " + inputArray[i];
+            }
+
+            return result;
         }
 
         public void InterpretInput()
@@ -127,6 +135,10 @@ namespace JARVIS
                 {
                     switch (inputArray[i])
                     {
+                        case "who": case "what": case "when": case "where": case "why": case "how":
+                            useConverser = false;
+                            knowledgeBase.SendQuery(GetInputPastPoint(i));
+                            break;
                         case "open":
                             if (!command)
                             {
@@ -139,12 +151,13 @@ namespace JARVIS
                                         switch (inputArray[j])
                                         {
                                             case "notepad":
-                                                System.Diagnostics.Process.Start("notepad.exe");
+                                                pcManager.OpenProgram("notepad");
                                                 found = true;
                                                 command = true;
                                                 lastCommand = "open notepad".Split(' ');
                                                 break;
                                             default:
+                                                pcManager.SearchAndOpen(inputArray[j]);
                                                 break;
                                         }
                                     }
@@ -202,11 +215,7 @@ namespace JARVIS
                                                     switch (lastCommand[k])
                                                     {
                                                         case "notepad":
-                                                            foreach (Process proc in Process.GetProcessesByName("Notepad"))
-                                                            {
-                                                                proc.CloseMainWindow();
-                                                                proc.WaitForExit();
-                                                            }
+                                                            pcManager.CloseAllProgramInstances("Notepad");
                                                             found = true;
                                                             command = true;
                                                             break;
@@ -231,6 +240,40 @@ namespace JARVIS
                                                 break;
                                         }
                                     }
+                                }
+                            }
+                            break;
+                        case "powerpoint":
+                            officeManager.CheckForApplication(OfficeManager.ApplicationType.PowerPoint);
+
+                            for (int j = i; j < inputArray.Length; j++)
+                            {
+                                bool found = false;
+
+                                if (!found)
+                                {
+                                    switch (inputArray[j])
+                                    {
+                                        case "first":
+                                            officeManager.goToFirstSlide();
+                                            break;
+                                        case "last":
+                                            officeManager.goToLastSlide();
+                                            break;
+                                        case "next":
+                                            officeManager.goToNextSlide();
+                                            break;
+                                        case "previous":
+                                            officeManager.goToPreviousSlide();
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    command = true;
+                                    break;
                                 }
                             }
                             break;
@@ -260,7 +303,7 @@ namespace JARVIS
 
         private void cbSynthesis_CheckedChanged(object sender, EventArgs e)
         {
-            useSpeech = !cbSynthesis.Checked;
+            Converser.useSpeech = !cbSynthesis.Checked;
         }
 
         private void bwGetResponse_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -272,16 +315,37 @@ namespace JARVIS
         {
             if (!e.Cancelled && (e.Error == null))
             {
-                string response = (string)e.Result;
-                Say(response);
+                string result;
+
+                if (useConverser)
+                {
+                    result = (string)e.Result;
+                }
+                else
+                {
+                    string wolframResult = knowledgeBase.GetResult();
+                    if (wolframResult.Equals("No result found"))
+                    {
+                        result = (string)e.Result;
+                    }
+                    else
+                    {
+                        result = wolframResult;
+                    }
+
+                    useConverser = true;
+                }
+
+                WriteToOutput("JARVIS: " + result);
+                Converser.Say(result, recognition);
             }
             else if (e.Cancelled)
             {
-                Say("User Cancelled");
+                WriteToOutput(Converser.Say("User Cancelled", recognition));
             }
             else
             {
-                Say("An error has occured");
+                WriteToOutput(Converser.Say("An error has occured", recognition));
             }
         }
 
@@ -290,8 +354,18 @@ namespace JARVIS
             BackgroundWorker sendingWorker = (BackgroundWorker)sender;
             string input = (string)e.Argument;
 
-            Converser converser = new Converser();
+            InterpretInput();
+
             e.Result = converser.Respond(input);
+        }
+
+        /*
+         * This is for resource clean-up when the user closes the program
+         */
+        private void frmJarvis_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            recognition.Dispose();
+            faceTracking.Close();
         }
     }
 }

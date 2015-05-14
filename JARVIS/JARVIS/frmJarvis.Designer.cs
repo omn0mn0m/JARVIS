@@ -128,6 +128,7 @@
             this.Controls.Add(this.btnSettings);
             this.Name = "frmJarvis";
             this.Text = "JARVIS";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmJarvis_FormClosed);
             this.Load += new System.EventHandler(this.frmJarvis_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
