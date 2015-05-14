@@ -32,6 +32,8 @@ namespace JARVIS
 
         private PCManager pcManager = new PCManager();           // Manages system tasks
 
+        private OfficeManager officeManager = new OfficeManager();
+
         private FaceTracking.MainForm faceTracking = new FaceTracking.MainForm();
 
         private KnowledgeBase knowledgeBase = new KnowledgeBase(wolframAppID);
@@ -238,6 +240,40 @@ namespace JARVIS
                                                 break;
                                         }
                                     }
+                                }
+                            }
+                            break;
+                        case "powerpoint":
+                            officeManager.CheckForApplication(OfficeManager.ApplicationType.PowerPoint);
+
+                            for (int j = i; j < inputArray.Length; j++)
+                            {
+                                bool found = false;
+
+                                if (!found)
+                                {
+                                    switch (inputArray[j])
+                                    {
+                                        case "first":
+                                            officeManager.goToFirstSlide();
+                                            break;
+                                        case "last":
+                                            officeManager.goToLastSlide();
+                                            break;
+                                        case "next":
+                                            officeManager.goToNextSlide();
+                                            break;
+                                        case "previous":
+                                            officeManager.goToPreviousSlide();
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    command = true;
+                                    break;
                                 }
                             }
                             break;
