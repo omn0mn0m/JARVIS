@@ -21,7 +21,7 @@ namespace JARVIS
         public static bool useRecognition = true;             // If speech recognition should be used
         private static string wolframAppID = "LXA9LJ-3835YR8529";
 
-        private String[] inputArray;                    // Array for input
+        private Input input = new Input();
         private String[] lastCommand;                   // Array for last command stated
         private Converser converser = new Converser();          // Converser for casual conversation with user
         private bool useConverser = true;                                                           
@@ -108,47 +108,35 @@ namespace JARVIS
         }
 
         // Takes in the input, outputs it, and turns it into an array for processing
-        public void ReceiveInput(String input)
+        public void ReceiveInput(String inputString)
         {
-            WriteToOutput("USER: " + input);
-            inputArray = input.ToLower().Split(' ');
-        }
-
-        public string GetInputPastPoint(int point)
-        {
-            string result = "";
-
-            for (int i = point; i < inputArray.Length; i++)
-            {
-                result = result + " " + inputArray[i];
-            }
-
-            return result;
+            WriteToOutput("USER: " + inputString);
+            input.ReceiveInput(inputString);
         }
 
         public void InterpretInput()
         {
-            for (int i = 0; i < inputArray.Length; i++)
+            for (int i = 0; i < input.GetInputArrayLength(); i++)
             {
                 bool command = false;
                 if (!command)
                 {
-                    switch (inputArray[i])
+                    switch (input.GetWord(i))
                     {
                         case "who": case "what": case "when": case "where": case "why": case "how":
                             useConverser = false;
-                            knowledgeBase.SendQuery(GetInputPastPoint(i));
+                            knowledgeBase.SendQuery(input.GetInputPastPoint(i));
                             break;
                         case "open":
                             if (!command)
                             {
-                                for (int j = i; j < inputArray.Length; j++)
+                                for (int j = i; j < input.GetInputArrayLength(); j++)
                                 {
                                     bool found = false;
 
                                     if (!found)
                                     {
-                                        switch (inputArray[j])
+                                        switch (input.GetWord(j))
                                         {
                                             case "notepad":
                                                 pcManager.OpenProgram("notepad");
@@ -157,7 +145,7 @@ namespace JARVIS
                                                 lastCommand = "open notepad".Split(' ');
                                                 break;
                                             default:
-                                                pcManager.SearchAndOpen(inputArray[j]);
+                                                pcManager.SearchAndOpen(input.GetWord(j));
                                                 break;
                                         }
                                     }
@@ -172,13 +160,13 @@ namespace JARVIS
                         case "respond":
                             if (!command)
                             {
-                                for (int j = i; j < inputArray.Length; j++)
+                                for (int j = i; j < input.GetInputArrayLength(); j++)
                                 {
                                     bool found = false;
 
                                     if (!found)
                                     {
-                                        switch (inputArray[j])
+                                        switch (input.GetWord(j))
                                         {
                                             case "facebook":
                                                 facebookInteract = new XMPPInteractor("chat.facebook.com", "tranngocnam97", "tiengviet");
@@ -246,13 +234,13 @@ namespace JARVIS
                         case "powerpoint":
                             officeManager.CheckForApplication(OfficeManager.ApplicationType.PowerPoint);
 
-                            for (int j = i; j < inputArray.Length; j++)
+                            for (int j = i; j < input.GetInputArrayLength(); j++)
                             {
                                 bool found = false;
 
                                 if (!found)
                                 {
-                                    switch (inputArray[j])
+                                    switch (input.GetWord(j))
                                     {
                                         case "first":
                                             officeManager.goToFirstSlide();

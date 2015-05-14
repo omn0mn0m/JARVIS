@@ -14,7 +14,7 @@ namespace JARVIS.Util
     class XMPPInteractor
     {
         XmppClientConnection xmpp;
-        Converser jarvis = new Converser();
+        Dictionary<Jid, Converser> jarvisConversation = new Dictionary<Jid, Converser>();
 
         public XMPPInteractor(String service, String username, String password)
         {
@@ -48,7 +48,14 @@ namespace JARVIS.Util
             // from
             Jid to = msg.From;
 
-            string s = jarvis.Respond(a);
+            if (!jarvisConversation.ContainsKey(to))
+            {
+                jarvisConversation.Add(to, new Converser());
+            }
+
+
+            string s = converser.Respond(a);
+
             agsXMPP.protocol.client.Message nmsg = new agsXMPP.protocol.client.Message();
             nmsg.Type = agsXMPP.protocol.client.MessageType.chat;
             nmsg.To = to;
