@@ -68,7 +68,7 @@ namespace JARVIS
         public void WriteToOutput(String output)
         {
             // Adds the new output message to a new line in the output text field
-            txtOutput.AppendText(System.Environment.NewLine + "[" + System.DateTime.Now + "] " + output);
+            txtOutput.AppendText(System.Environment.NewLine + "[" + System.DateTime.Now + "] " + Converser.CensorInput(output));
         }
 
         // Event handler for when speech is recognised
