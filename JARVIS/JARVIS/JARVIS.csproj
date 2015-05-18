@@ -155,8 +155,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conversation\XMPPConversationList.cs" />
     <Compile Include="NeuralNetwork\Neuron.cs" />
-    <Compile Include="Util\Converser.cs" />
+    <Compile Include="Conversation\Converser.cs" />
     <Compile Include="frmJarvis.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,7 +171,7 @@
     <Compile Include="Util\OfficeManager.cs" />
     <Compile Include="Util\PCManager.cs" />
     <Compile Include="Util\SettingsScanner.cs" />
-    <Compile Include="Util\XMPPInteractor.cs" />
+    <Compile Include="Conversation\XMPPInteractor.cs" />
     <EmbeddedResource Include="frmJarvis.resx">
       <DependentUpon>frmJarvis.cs</DependentUpon>
     </EmbeddedResource>

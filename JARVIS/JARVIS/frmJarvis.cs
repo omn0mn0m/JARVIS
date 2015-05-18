@@ -19,7 +19,7 @@ namespace JARVIS
     {
         private SpeechRecognitionEngine recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));    // Speech recognition engine w/ US English as the langauge
         public static bool useRecognition = true;             // If speech recognition should be used
-        private static string wolframAppID = "LXA9LJ-3835YR8529";
+        public static string wolframAppID = "LXA9LJ-3835YR8529";
 
         private Input input = new Input();
         private String[] lastCommand;                   // Array for last command stated
@@ -68,7 +68,7 @@ namespace JARVIS
         public void WriteToOutput(String output)
         {
             // Adds the new output message to a new line in the output text field
-            txtOutput.AppendText(System.Environment.NewLine + "[" + System.DateTime.Now + "] " + Converser.CensorInput(output));
+            txtOutput.AppendText(System.Environment.NewLine + "[" + System.DateTime.Now + "] " + Input.CensorInput(output));
         }
 
         // Event handler for when speech is recognised
@@ -123,10 +123,10 @@ namespace JARVIS
                 {
                     switch (input.GetWord(i))
                     {
-                        case "who": case "what": case "when": case "where": case "why": case "how":
-                            useConverser = false;
-                            knowledgeBase.SendQuery(input.GetInputPastPoint(i));
-                            break;
+                        //case "who": case "what": case "when": case "where": case "why": case "how":
+                        //    useConverser = false;
+                        //    knowledgeBase.SendQuery(input.GetInputPastPoint(i));
+                        //    break;
                         case "open":
                             if (!command)
                             {
@@ -303,27 +303,27 @@ namespace JARVIS
         {
             if (!e.Cancelled && (e.Error == null))
             {
-                string result;
+                //string result;
 
-                if (useConverser)
-                {
-                    result = (string)e.Result;
-                }
-                else
-                {
-                    string wolframResult = knowledgeBase.GetResult();
-                    if (wolframResult.Equals("No result found"))
-                    {
-                        result = (string)e.Result;
-                    }
-                    else
-                    {
-                        result = wolframResult;
-                    }
+                //if (useConverser)
+                //{
+                //    result = (string)e.Result;
+                //}
+                //else
+                //{
+                //    string wolframResult = knowledgeBase.GetResult();
+                //    if (wolframResult.Equals("No result found"))
+                //    {
+                //        result = (string)e.Result;
+                //    }
+                //    else
+                //    {
+                //        result = wolframResult;
+                //    }
 
-                    useConverser = true;
-                }
-
+                //    useConverser = true;
+                //}
+                string result = (string)e.Result;
                 WriteToOutput("JARVIS: " + result);
                 Converser.Say(result, recognition);
             }

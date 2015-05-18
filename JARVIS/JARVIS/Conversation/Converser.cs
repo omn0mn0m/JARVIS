@@ -14,7 +14,6 @@ namespace JARVIS.Util
     {
         private static SpeechSynthesizer speech = new SpeechSynthesizer();         // Text to Speech
         public static bool useSpeech = true;
-        public static bool useCensor = true;
 
         // Declares a class to construct chatterbots
         private ChatterBotFactory FACTORY = new ChatterBotFactory();
@@ -31,7 +30,10 @@ namespace JARVIS.Util
         private const ChatterBotType PANDORABOTS = ChatterBotType.PANDORABOTS;
         private const ChatterBotType JABBERWACKY = ChatterBotType.JABBERWACKY;
 
-        private static string[] censoredWords = { "fuck", "shit", "nigger", "dick", "ass" };
+        private static Input input = new Input();
+
+        private KnowledgeBase knowledgeBase = new KnowledgeBase(frmJarvis.wolframAppID);
+        private bool useKnowledgeBase = true;
 
         public Converser() : this(true)
         {
@@ -48,14 +50,30 @@ namespace JARVIS.Util
             chatSessionList = new List<ChatterBotSession>();
             chatSessionList.Add(chatSession);
 
-            Converser.useCensor = useCensor;
+            Input.useCensor = useCensor;
         }
 
         public String Respond(String input)
         {
             try
             {
-                return chatSession.Think(input);
+                if (useKnowledgeBase && CheckKnowledgeBase())
+                {
+                    string wolframResult = knowledgeBase.GetResult();
+
+                    if (wolframResult.Equals("No result found"))
+                    {
+                        return chatSession.Think(input);
+                    }
+                    else
+                    {
+                        return wolframResult;
+                    }
+                }
+                else
+                {
+                    return chatSession.Think(input);
+                }
             }
             catch (Exception)
             {
@@ -63,34 +81,46 @@ namespace JARVIS.Util
             }
         }
 
+        public bool CheckKnowledgeBase()
+        {
+            string word;
+
+            for (int i = 0; i < input.GetInputArrayLength(); i++)
+            {
+                word = input.GetWord(i);
+
+                if (word.Equals("who") || word.Equals("what") || word.Equals("when") || word.Equals("where") || word.Equals("why") || word.Equals("how"))
+                {
+                    knowledgeBase.SendQuery(input.GetInputPastPoint(i));
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         // Makes JARVIS say something with text to speech as well as prints it to the console
         public static String Say(String message)
         {
-            if (useCensor)
-            {
-                message = CensorInput(message);
-            }
+            input.ReceiveInput(message);
 
             if (useSpeech)
             {
-                speech.Speak(message);                   // Reads the message as speech
+                speech.Speak(input.GetInput());                   // Reads the message as speech
             }
-            return ("JARVIS: " + message);        // Writes the message to the output text field
+            return ("JARVIS: " + input.GetInput());        // Writes the message to the output text field
         }
 
         public static String Say(String message, SpeechRecognitionEngine recognition)
         {
-            if (useCensor)
-            {
-                message = CensorInput(message);
-            }
+            input.ReceiveInput(message);
 
             if (useSpeech)
             {
                 if (frmJarvis.useRecognition) {
                     recognition.RecognizeAsyncCancel();
                 }
-                speech.Speak(message);                   // Reads the message as speech
+                speech.Speak(input.GetInput());                   // Reads the message as speech
 
                 if (frmJarvis.useRecognition)
                 {
@@ -102,36 +132,7 @@ namespace JARVIS.Util
                 }
             }
 
-            return ("JARVIS: " + message);        // Writes the message to the output text field
-        }
-
-        public static string CensorInput(string message)
-        {
-            string[] messageArray;
-            string fixedMessage = message;
-
-            bool censoredSomething = false;
-
-            messageArray = message.Split(' ');
-
-            for (int i = 0; i < messageArray.Length; i++)
-            {
-                for (int j = 0; j < censoredWords.Length; j++)
-                {
-                    if (messageArray[i].ToLower().Equals(censoredWords[j]))
-                    {
-                        messageArray[i] = "*";
-                        censoredSomething = true;
-                    }
-                }
-            }
-
-            if (censoredSomething)
-            {
-                fixedMessage = string.Join(" ", messageArray);
-            }
-
-            return fixedMessage;
+            return ("JARVIS: " + input.GetInput());        // Writes the message to the output text field
         }
     }
 }

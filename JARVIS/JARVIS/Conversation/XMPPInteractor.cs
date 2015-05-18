@@ -8,13 +8,14 @@ using agsXMPP.protocol.client;
 using agsXMPP.protocol.iq.roster;
 using agsXMPP.Collections;
 using ChatterBotAPI;
+using JARVIS.Conversation;
 
 namespace JARVIS.Util
 {
     class XMPPInteractor
     {
         XmppClientConnection xmpp;
-        Dictionary<Jid, Converser> jarvisConversation = new Dictionary<Jid, Converser>();
+        XMPPConversationList conversations = new XMPPConversationList(true);
 
         public XMPPInteractor(String service, String username, String password)
         {
@@ -48,15 +49,7 @@ namespace JARVIS.Util
             // from
             Jid to = msg.From;
 
-            if (!jarvisConversation.ContainsKey(to))
-            {
-                jarvisConversation.Add(to, new Converser());
-            }
-
-            Converser converser;
-            jarvisConversation.TryGetValue(to, out converser);
-
-            string s = converser.Respond(a);
+            string s = conversations.RespondToMessage(to, a);
 
             agsXMPP.protocol.client.Message nmsg = new agsXMPP.protocol.client.Message();
             nmsg.Type = agsXMPP.protocol.client.MessageType.chat;
