@@ -63,6 +63,7 @@ namespace JARVIS
             // Creates a specific command grammar system to only understand a few phrases
             Choices commandChoices = new Choices();
             commandChoices.Add(new string[] {
+                "introduce",
                 "open palemoon",
                 "open notepad",
                 "who is barack obama",
@@ -172,7 +173,24 @@ namespace JARVIS
                 case ("Command Grammar"):
                     recognition.Grammars[recognition.Grammars.IndexOf(activationGrammar)].Enabled = true;
                     recognition.Grammars[recognition.Grammars.IndexOf(commandGrammar)].Enabled = false;
-                    ThinkOfResponse(input);
+                    
+                    ReceiveInput(input);
+
+                    InterpretInput();
+
+                    if (!foundCommand)
+                    {
+                        if (!bwGetResponse.IsBusy)
+                        {
+                            bwGetResponse.RunWorkerAsync(input);
+                        }
+                    }
+                    else
+                    {
+                        WriteToOutput("JARVIS: " + commandMessage);
+                        Converser.Say(commandMessage, recognition);
+                    }
+
                     break;
                 case ("Dictation Grammar"):
                     recognition.Grammars[recognition.Grammars.IndexOf(activationGrammar)].Enabled = true;
@@ -235,6 +253,10 @@ namespace JARVIS
                 {
                     switch (input.GetWord(i))
                     {
+                        case "introduce":
+                            foundCommand = true;
+                            commandMessage = "Hello, I am JARVIS. I am Nam's graduation project. It took approximately 70 hours to complete me. My main function is to have conversation, with a secondary function of searching through databases for information. I can also perform many tasks, such as changing the PowerPoint.";
+                            break;
                         case "open":
                             if (!foundCommand)
                             {
@@ -287,18 +309,22 @@ namespace JARVIS
                                         case "first":
                                             officeManager.goToFirstSlide();
                                             commandMessage = "Going to first slide";
+                                            foundCommand = true;
                                             break;
                                         case "last":
                                             officeManager.goToLastSlide();
                                             commandMessage = "Going to last slide";
+                                            foundCommand = true;
                                             break;
                                         case "next":
                                             officeManager.goToNextSlide();
                                             commandMessage = "Going to next slide";
+                                            foundCommand = true;
                                             break;
                                         case "previous":
                                             officeManager.goToPreviousSlide();
                                             commandMessage = "Going to previous slide";
+                                            foundCommand = true;
                                             break;
                                         default:
                                             break;
@@ -311,13 +337,16 @@ namespace JARVIS
                                 }
                             }
                             break;
-                        case "ultron":
-                            frmVideo videoPlayer = new frmVideo();
-                            //videoPlayer.Invoke((MethodInvoker)delegate() {
+                        case "in":
+                            if (input.HasWord("conclusion"))
+                            {
+                                frmVideo videoPlayer = new frmVideo();
+                                //videoPlayer.Invoke((MethodInvoker)delegate() {
                                 videoPlayer.Show();
                                 videoPlayer.LoadVideo(ageOfUltron);
-                            //});
-                            foundCommand = true;
+                                //});
+                                foundCommand = true;
+                            }
                             break;
                         case "look":
                             FaceTracking.MainForm faceTracking = new FaceTracking.MainForm();

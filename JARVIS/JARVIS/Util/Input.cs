@@ -20,6 +20,11 @@ namespace JARVIS.Util
 
         }
 
+        public bool HasWord(string word)
+        {
+            return inputArray.Contains(word);
+        }
+
         public void ReceiveInput(string input)
         {
             Input.input = input;
