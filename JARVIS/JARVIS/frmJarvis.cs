@@ -21,6 +21,11 @@ namespace JARVIS
         public static bool useRecognition = true;             // If speech recognition should be used
         public static string wolframAppID = "LXA9LJ-3835YR8529";
 
+        private static DictationGrammar noiseGrammar;
+        private static DictationGrammar dictationGrammar;
+        private static Grammar commandGrammar;
+        private static Grammar activationGrammar;
+
         private static bool foundCommand = false;
         private static string commandMessage;
 
@@ -46,12 +51,45 @@ namespace JARVIS
             bwGetResponse.WorkerSupportsCancellation = true;
 
             // Creates a grammar to understand most English sentences
-            DictationGrammar grammar = new DictationGrammar();
-            grammar.Name = "Default Grammar";
-            grammar.Enabled = true;
+            dictationGrammar = new DictationGrammar();
+            dictationGrammar.Name = "Dictation Grammar";
+            dictationGrammar.Enabled = false;
+
+            // Creates a grammar to find noise
+            noiseGrammar = new DictationGrammar("grammar:dictation#pronunciation");
+            noiseGrammar.Name = "Noise Grammar";
+            noiseGrammar.Enabled = true;
+
+            // Creates a specific command grammar system to only understand a few phrases
+            Choices commandChoices = new Choices();
+            commandChoices.Add(new string[] {
+                "open palemoon",
+                "open notepad",
+                "who is barack obama",
+                "what is the forecast in horsham pennsylvania",
+                "what is the derivative of 3x^3 + 2x",
+                "next slide",
+                "previous slide",
+                "in conclusion",
+                "respond to facebook",
+                "look at me"
+            });
+            commandGrammar = new Grammar(commandChoices);
+            commandGrammar.Name = "Command Grammar";
+            commandGrammar.Enabled = false;
+
+            // Creates the mode activator
+            Choices activationChoices = new Choices();
+            activationChoices.Add(new string[] { "jarvis", "let's talk", "stop talking" });
+            activationGrammar = new Grammar(activationChoices);
+            activationGrammar.Name = "Activation Grammar";
+            activationGrammar.Enabled = true;
 
             // Loads the grammar to the speech recognition engine
-            recognition.LoadGrammarAsync(grammar);
+            recognition.LoadGrammarAsync(activationGrammar);
+            recognition.LoadGrammarAsync(dictationGrammar);
+            recognition.LoadGrammarAsync(commandGrammar);
+            recognition.LoadGrammarAsync(noiseGrammar);
 
             // Sets the recognition engine to the computer's default audio input device and starts recognising speech
             recognition.SetInputToDefaultAudioDevice();
@@ -73,7 +111,7 @@ namespace JARVIS
         // Event handler for when speech is recognised
         public void Recognition_SpeechRecognised(object sender, SpeechRecognizedEventArgs e)
         {
-            ThinkOfResponse(e.Result.Text);
+             ThinkOfResponse(e.Result.Text, e.Result.Grammar.Name);
         }
 
         public void ThinkOfResponse(string input)
@@ -94,6 +132,70 @@ namespace JARVIS
             {
                 WriteToOutput("JARVIS: " + commandMessage);
                 Converser.Say(commandMessage, recognition);
+            }
+        }
+
+        public void ThinkOfResponse(string input, string grammar)
+        {
+            // Determines which grammars to use...
+            switch (grammar)
+            {
+                case ("Activation Grammar"):
+                    ReceiveInput(input);
+
+                    switch (input)
+                    {
+                        case "jarvis":
+                            recognition.Grammars[recognition.Grammars.IndexOf(activationGrammar)].Enabled = false;
+                            recognition.Grammars[recognition.Grammars.IndexOf(noiseGrammar)].Enabled = true;
+                            recognition.Grammars[recognition.Grammars.IndexOf(commandGrammar)].Enabled = true;
+                            recognition.Grammars[recognition.Grammars.IndexOf(dictationGrammar)].Enabled = false;
+                            break;
+                        case "let's talk":
+                            recognition.Grammars[recognition.Grammars.IndexOf(activationGrammar)].Enabled = false;
+                            recognition.Grammars[recognition.Grammars.IndexOf(noiseGrammar)].Enabled = false;
+                            recognition.Grammars[recognition.Grammars.IndexOf(commandGrammar)].Enabled = false;
+                            recognition.Grammars[recognition.Grammars.IndexOf(dictationGrammar)].Enabled = true;
+                            break;
+                        case "stop talking":
+                            recognition.Grammars[recognition.Grammars.IndexOf(activationGrammar)].Enabled = true;
+                            recognition.Grammars[recognition.Grammars.IndexOf(noiseGrammar)].Enabled = true;
+                            recognition.Grammars[recognition.Grammars.IndexOf(commandGrammar)].Enabled = false;
+                            recognition.Grammars[recognition.Grammars.IndexOf(dictationGrammar)].Enabled = false;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case ("Noise Grammar"):
+                    break;
+                case ("Command Grammar"):
+                    recognition.Grammars[recognition.Grammars.IndexOf(activationGrammar)].Enabled = true;
+                    recognition.Grammars[recognition.Grammars.IndexOf(commandGrammar)].Enabled = false;
+                    ThinkOfResponse(input);
+                    break;
+                case ("Dictation Grammar"):
+                    recognition.Grammars[recognition.Grammars.IndexOf(activationGrammar)].Enabled = true;
+
+                    ReceiveInput(input);
+
+                    InterpretInput();
+
+                    if (!foundCommand)
+                    {
+                        if (!bwGetResponse.IsBusy)
+                        {
+                            bwGetResponse.RunWorkerAsync(input);
+                        }
+                    }
+                    else
+                    {
+                        WriteToOutput("JARVIS: " + commandMessage);
+                        Converser.Say(commandMessage, recognition);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
