@@ -50,7 +50,8 @@
             this.ClientSize = new System.Drawing.Size(877, 617);
             this.Controls.Add(this.axWindowsMediaPlayer1);
             this.Name = "frmVideo";
-            this.Text = "frmVideo";
+            this.Text = "JARVIS Video";
+            this.Load += new System.EventHandler(this.frmVideo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
             this.ResumeLayout(false);
 

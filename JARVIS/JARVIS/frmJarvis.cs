@@ -21,6 +21,9 @@ namespace JARVIS
         public static bool useRecognition = true;             // If speech recognition should be used
         public static string wolframAppID = "LXA9LJ-3835YR8529";
 
+        private static bool foundCommand = false;
+        private static string commandMessage;
+
         private static Input input = new Input();
         private static Converser converser = new Converser();          // Converser for casual conversation with user                                                     
 
@@ -32,7 +35,7 @@ namespace JARVIS
 
         private static OfficeManager officeManager = new OfficeManager();
 
-        private static FaceTracking.MainForm faceTracking = new FaceTracking.MainForm();
+        private static string ageOfUltron = @"C:\Users\Nam\Documents\GitHub\JARVIS\JARVIS\JARVIS\Resources\age_of_ultron_trailer.mp4";
 
         public frmJarvis()
         {
@@ -70,12 +73,27 @@ namespace JARVIS
         // Event handler for when speech is recognised
         public void Recognition_SpeechRecognised(object sender, SpeechRecognizedEventArgs e)
         {
-            // Writes the recognised text to the input text field and outputs it to the output text field
-            ReceiveInput(e.Result.Text);
+            ThinkOfResponse(e.Result.Text);
+        }
 
-            if (!bwGetResponse.IsBusy)
+        public void ThinkOfResponse(string input)
+        {
+            // Writes the recognised text to the input text field and outputs it to the output text field
+            ReceiveInput(input);
+
+            InterpretInput();
+
+            if (!foundCommand)
             {
-                bwGetResponse.RunWorkerAsync(e.Result.Text);
+                if (!bwGetResponse.IsBusy)
+                {
+                    bwGetResponse.RunWorkerAsync(input);
+                }
+            }
+            else
+            {
+                WriteToOutput("JARVIS: " + commandMessage);
+                Converser.Say(commandMessage, recognition);
             }
         }
 
@@ -93,12 +111,8 @@ namespace JARVIS
             // Outputs the user input to the output text field
             string input = txtInput.Text;
             txtInput.Clear();
-            ReceiveInput(input);
-            
-            if (!bwGetResponse.IsBusy)
-            {
-                bwGetResponse.RunWorkerAsync(input);
-            }
+
+            ThinkOfResponse(input);
         }
 
         // Takes in the input, outputs it, and turns it into an array for processing
@@ -110,24 +124,27 @@ namespace JARVIS
 
         public static void InterpretInput()
         {
+            foundCommand = false;
+            commandMessage = "";
+
             for (int i = 0; i < input.GetInputArrayLength(); i++)
             {
-                bool command = false;
-                if (!command)
+                if (!foundCommand)
                 {
                     switch (input.GetWord(i))
                     {
                         case "open":
-                            if (!command)
+                            if (!foundCommand)
                             {
                                 for (int j = (i + 1); j < input.GetInputArrayLength(); j++)
                                 {
-                                    pcManager.SearchAndOpen(input.GetWord(j));
+                                    commandMessage = pcManager.SearchAndOpen(input.GetWord(j));
+                                    foundCommand = pcManager.foundProgram;
                                 }
                             }
                             break;
                         case "respond":
-                            if (!command)
+                            if (!foundCommand)
                             {
                                 for (int j = i; j < input.GetInputArrayLength(); j++)
                                 {
@@ -140,7 +157,8 @@ namespace JARVIS
                                             case "facebook":
                                                 facebookInteract = new XMPPInteractor("chat.facebook.com", "tranngocnam97", "tiengviet");
                                                 found = true;
-                                                command = true;
+                                                foundCommand = true;
+                                                commandMessage = "Responding to all incoming Facebook messages";
                                                 break;
                                             default:
                                                 break;
@@ -148,7 +166,6 @@ namespace JARVIS
                                     }
                                     else
                                     {
-                                        command = true;
                                         break;
                                     }
                                 }
@@ -167,15 +184,19 @@ namespace JARVIS
                                     {
                                         case "first":
                                             officeManager.goToFirstSlide();
+                                            commandMessage = "Going to first slide";
                                             break;
                                         case "last":
                                             officeManager.goToLastSlide();
+                                            commandMessage = "Going to last slide";
                                             break;
                                         case "next":
                                             officeManager.goToNextSlide();
+                                            commandMessage = "Going to next slide";
                                             break;
                                         case "previous":
                                             officeManager.goToPreviousSlide();
+                                            commandMessage = "Going to previous slide";
                                             break;
                                         default:
                                             break;
@@ -183,10 +204,24 @@ namespace JARVIS
                                 }
                                 else
                                 {
-                                    command = true;
+                                    foundCommand = true;
                                     break;
                                 }
                             }
+                            break;
+                        case "ultron":
+                            frmVideo videoPlayer = new frmVideo();
+                            //videoPlayer.Invoke((MethodInvoker)delegate() {
+                                videoPlayer.Show();
+                                videoPlayer.LoadVideo(ageOfUltron);
+                            //});
+                            foundCommand = true;
+                            break;
+                        case "look":
+                            FaceTracking.MainForm faceTracking = new FaceTracking.MainForm();
+                            faceTracking.Show();
+                            commandMessage = "Activating facial detection. Please select a camera";
+                            foundCommand = true;
                             break;
                         default:
                             break;
@@ -245,8 +280,6 @@ namespace JARVIS
             BackgroundWorker sendingWorker = (BackgroundWorker)sender;
             string input = (string)e.Argument;
 
-            InterpretInput();
-
             e.Result = converser.Respond(input);
         }
 
@@ -256,7 +289,6 @@ namespace JARVIS
         private void frmJarvis_FormClosed(object sender, FormClosedEventArgs e)
         {
             recognition.Dispose();
-            faceTracking.Close();
         }
     }
 }
