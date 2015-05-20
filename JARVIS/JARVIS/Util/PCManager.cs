@@ -12,6 +12,7 @@ namespace JARVIS.Util
     {
         private string programDirectory64 = "C:\\Program Files";
         private string programDirectory32 = "C:\\Program Files (x86)";
+        private string system32 = "C:\\windows\\system32";
 
         public PCManager()
         {
@@ -20,7 +21,11 @@ namespace JARVIS.Util
 
         public void OpenProgram(string name)
         {
-            System.Diagnostics.Process.Start(name + ".exe");
+            try
+            {
+                System.Diagnostics.Process.Start(name + ".exe");
+            }
+            catch (System.ComponentModel.Win32Exception) { }
         }
 
         public void CloseAllProgramInstances(string name)
@@ -73,6 +78,11 @@ namespace JARVIS.Util
                         break;
                     }
                 }
+            }
+
+            if (!foundProgram)
+            {
+                OpenProgram(name);
             }
         }
     }

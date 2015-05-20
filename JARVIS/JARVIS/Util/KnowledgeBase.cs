@@ -32,25 +32,73 @@ namespace JARVIS.Util
             result = engine.RunQuery(query);
         }
 
-        public string GetResult()
+        public string GetSome()
         {
-            string result = "No result found";
+            StringBuilder wolframResult = new StringBuilder();
+            bool foundResult = false;
+
+            if (!result.DataTypes.Contains("Word"))
+            {
+                foreach (var pod in this.result.Pods)
+                {
+                    if (!(pod.Title.Equals("Input interpretation") || pod.Title.Equals("Response")))
+                    {
+                        foreach (var subpod in pod.SubPods)
+                        {
+                            if (string.IsNullOrEmpty(subpod.Title) && !string.IsNullOrEmpty(subpod.PlainText))
+                            {
+                                System.Console.WriteLine("Wrong");
+                                wolframResult.AppendLine();
+                                wolframResult.AppendLine();
+                                wolframResult.Append(pod.Title);
+                                wolframResult.AppendLine();
+                                wolframResult.Append(subpod.PlainText);
+
+                                foundResult = true;
+                            }
+                        }
+                    }
+                    else { }
+                }
+            }
+
+            if (!foundResult)
+            {
+                return "No result found";
+            }
+
+            return wolframResult.ToString();
+        }
+
+        public string GetAll()
+        {
+            StringBuilder wolframResult = new StringBuilder();
+            bool foundResult = false;
 
             foreach (var pod in this.result.Pods)
             {
-                if (pod.Title.Equals("Result")) 
+                foreach (var subpod in pod.SubPods)
                 {
-                    foreach (var subpod in pod.SubPods)
+                    if (string.IsNullOrEmpty(subpod.Title) && !string.IsNullOrEmpty(subpod.PlainText))
                     {
-                        if (string.IsNullOrEmpty(subpod.Title) && !string.IsNullOrEmpty(subpod.PlainText))
-                        {
-                            result = subpod.PlainText;
-                        }
+                        wolframResult.AppendLine();
+                        wolframResult.AppendLine();
+
+                        wolframResult.Append(pod.Title);
+                        wolframResult.AppendLine();
+                        wolframResult.Append(subpod.PlainText);
+
+                        foundResult = true;
                     }
                 }
             }
 
-            return result;
+            if (!foundResult)
+            {
+                return "No result found";
+            }
+
+            return wolframResult.ToString();
         }
 
         public List<string> GetPods() {

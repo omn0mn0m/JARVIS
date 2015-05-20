@@ -42,6 +42,8 @@ namespace JARVIS.Util
 
         public Converser(bool useCensor)
         {
+            speech.Rate = 1;
+
             // Initialises the chatterbots
             chatterbot = FACTORY.Create(CLEVERBOT);
 
@@ -53,13 +55,15 @@ namespace JARVIS.Util
             Input.useCensor = useCensor;
         }
 
-        public String Respond(String input)
+        public String Respond(string input)
         {
+            ReceiveInput(input);
+
             try
             {
                 if (useKnowledgeBase && CheckKnowledgeBase())
                 {
-                    string wolframResult = knowledgeBase.GetResult();
+                    string wolframResult = knowledgeBase.GetSome();
 
                     if (wolframResult.Equals("No result found"))
                     {
@@ -99,11 +103,47 @@ namespace JARVIS.Util
             return false;
         }
 
-        // Makes JARVIS say something with text to speech as well as prints it to the console
-        public static String Say(String message)
+        public static void ReceiveInput(string message)
         {
             input.ReceiveInput(message);
+        }
 
+        // Makes JARVIS say something with text to speech as well as prints it to the console
+        public static String Say(string message)
+        {
+            if (useSpeech)
+            {
+                speech.Speak(message);                   // Reads the message as speech
+            }
+            return ("JARVIS: " + message);        // Writes the message to the output text field
+        }
+
+        public static String Say(string message, SpeechRecognitionEngine recognition)
+        {
+            if (useSpeech)
+            {
+                if (frmJarvis.useRecognition)
+                {
+                    recognition.RecognizeAsyncCancel();
+                }
+                speech.Speak(message);                   // Reads the message as speech
+
+                if (frmJarvis.useRecognition)
+                {
+                    try
+                    {
+                        recognition.RecognizeAsync(RecognizeMode.Multiple);
+                    }
+                    catch (InvalidOperationException) { }
+                }
+            }
+
+            return ("JARVIS: " + message);        // Writes the message to the output text field
+        }
+
+        // Makes JARVIS say something with text to speech as well as prints it to the console
+        public static String Say()
+        {
             if (useSpeech)
             {
                 speech.Speak(input.GetInput());                   // Reads the message as speech
@@ -111,13 +151,12 @@ namespace JARVIS.Util
             return ("JARVIS: " + input.GetInput());        // Writes the message to the output text field
         }
 
-        public static String Say(String message, SpeechRecognitionEngine recognition)
+        public static String Say(SpeechRecognitionEngine recognition)
         {
-            input.ReceiveInput(message);
-
             if (useSpeech)
             {
-                if (frmJarvis.useRecognition) {
+                if (frmJarvis.useRecognition)
+                {
                     recognition.RecognizeAsyncCancel();
                 }
                 speech.Speak(input.GetInput());                   // Reads the message as speech

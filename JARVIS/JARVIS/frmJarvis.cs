@@ -17,26 +17,22 @@ namespace JARVIS
 {
     public partial class frmJarvis : Form
     {
-        private SpeechRecognitionEngine recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));    // Speech recognition engine w/ US English as the langauge
+        private static SpeechRecognitionEngine recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));    // Speech recognition engine w/ US English as the langauge
         public static bool useRecognition = true;             // If speech recognition should be used
         public static string wolframAppID = "LXA9LJ-3835YR8529";
 
-        private Input input = new Input();
-        private String[] lastCommand;                   // Array for last command stated
-        private Converser converser = new Converser();          // Converser for casual conversation with user
-        private bool useConverser = true;                                                           
+        private static Input input = new Input();
+        private static Converser converser = new Converser();          // Converser for casual conversation with user                                                     
 
-        private XMPPInteractor facebookInteract;                // XMPP interactor for Facebook
+        private static XMPPInteractor facebookInteract;                // XMPP interactor for Facebook
 
-        private BackgroundWorker bwGetResponse = new BackgroundWorker();
+        private static BackgroundWorker bwGetResponse = new BackgroundWorker();
 
-        private PCManager pcManager = new PCManager();           // Manages system tasks
+        private static PCManager pcManager = new PCManager();           // Manages system tasks
 
-        private OfficeManager officeManager = new OfficeManager();
+        private static OfficeManager officeManager = new OfficeManager();
 
-        private FaceTracking.MainForm faceTracking = new FaceTracking.MainForm();
-
-        private KnowledgeBase knowledgeBase = new KnowledgeBase(wolframAppID);
+        private static FaceTracking.MainForm faceTracking = new FaceTracking.MainForm();
 
         public frmJarvis()
         {
@@ -81,14 +77,12 @@ namespace JARVIS
             {
                 bwGetResponse.RunWorkerAsync(e.Result.Text);
             }
-
-            InterpretInput();
         }
 
         // Runs when the form is loaded
         private void frmJarvis_Load(object sender, EventArgs e)
         {
-            faceTracking.Show();
+            //faceTracking.Show();
 
             WriteToOutput(Converser.Say("I have been fully loaded.", recognition));
         }
@@ -114,7 +108,7 @@ namespace JARVIS
             input.ReceiveInput(inputString);
         }
 
-        public void InterpretInput()
+        public static void InterpretInput()
         {
             for (int i = 0; i < input.GetInputArrayLength(); i++)
             {
@@ -123,37 +117,12 @@ namespace JARVIS
                 {
                     switch (input.GetWord(i))
                     {
-                        //case "who": case "what": case "when": case "where": case "why": case "how":
-                        //    useConverser = false;
-                        //    knowledgeBase.SendQuery(input.GetInputPastPoint(i));
-                        //    break;
                         case "open":
                             if (!command)
                             {
-                                for (int j = i; j < input.GetInputArrayLength(); j++)
+                                for (int j = (i + 1); j < input.GetInputArrayLength(); j++)
                                 {
-                                    bool found = false;
-
-                                    if (!found)
-                                    {
-                                        switch (input.GetWord(j))
-                                        {
-                                            case "notepad":
-                                                pcManager.OpenProgram("notepad");
-                                                found = true;
-                                                command = true;
-                                                lastCommand = "open notepad".Split(' ');
-                                                break;
-                                            default:
-                                                pcManager.SearchAndOpen(input.GetWord(j));
-                                                break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        command = true;
-                                        break;
-                                    }
+                                    pcManager.SearchAndOpen(input.GetWord(j));
                                 }
                             }
                             break;
@@ -172,7 +141,6 @@ namespace JARVIS
                                                 facebookInteract = new XMPPInteractor("chat.facebook.com", "tranngocnam97", "tiengviet");
                                                 found = true;
                                                 command = true;
-                                                lastCommand = "respond facebook".Split(' ');
                                                 break;
                                             default:
                                                 break;
@@ -182,51 +150,6 @@ namespace JARVIS
                                     {
                                         command = true;
                                         break;
-                                    }
-                                }
-                            }
-                            break;
-                        case "stop":
-                            if (!command)
-                            {
-                                for (int j = i; j < lastCommand.Length; j++)
-                                {
-                                    bool found = false;
-
-                                    if (!found)
-                                    {
-                                        switch (lastCommand[j])
-                                        {
-                                            case "open":
-                                                for (int k = j; k < lastCommand.Length; k++)
-                                                {
-                                                    switch (lastCommand[k])
-                                                    {
-                                                        case "notepad":
-                                                            pcManager.CloseAllProgramInstances("Notepad");
-                                                            found = true;
-                                                            command = true;
-                                                            break;
-                                                    }
-
-                                                }
-                                                break;
-                                            case "respond":
-                                                for (int k = j; k < lastCommand.Length; k++)
-                                                {
-                                                    switch (lastCommand[k])
-                                                    {
-                                                        case "facebook":
-                                                            facebookInteract.Close();
-                                                            found = true;
-                                                            command = true;
-                                                            break;
-                                                    }
-                                                }
-                                                break;
-                                            default:
-                                                break;
-                                        }
                                     }
                                 }
                             }
@@ -303,26 +226,6 @@ namespace JARVIS
         {
             if (!e.Cancelled && (e.Error == null))
             {
-                //string result;
-
-                //if (useConverser)
-                //{
-                //    result = (string)e.Result;
-                //}
-                //else
-                //{
-                //    string wolframResult = knowledgeBase.GetResult();
-                //    if (wolframResult.Equals("No result found"))
-                //    {
-                //        result = (string)e.Result;
-                //    }
-                //    else
-                //    {
-                //        result = wolframResult;
-                //    }
-
-                //    useConverser = true;
-                //}
                 string result = (string)e.Result;
                 WriteToOutput("JARVIS: " + result);
                 Converser.Say(result, recognition);
