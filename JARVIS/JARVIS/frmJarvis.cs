@@ -17,7 +17,7 @@ namespace JARVIS
 {
     public partial class frmJarvis : Form
     {
-        private static SpeechRecognitionEngine recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));    // Speech recognition engine w/ US English as the langauge
+        private static SpeechRecognitionEngine recognition = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-GB"));    // Speech recognition engine w/ US English as the langauge
         public static bool useRecognition = true;             // If speech recognition should be used
         public static string wolframAppID = "LXA9LJ-3835YR8529";
 
@@ -67,9 +67,9 @@ namespace JARVIS
                 "open notepad",
                 "who is barack obama",
                 "what is the forecast in horsham pennsylvania",
-                "what is the derivative of 3x^3 + 2x",
-                "next slide",
-                "previous slide",
+                "what is the derivative of 3x to the 4th power",
+                "powerpoint next",
+                "powerpoint previous",
                 "in conclusion",
                 "respond to facebook",
                 "look at me"
