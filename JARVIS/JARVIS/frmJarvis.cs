@@ -21,7 +21,7 @@ namespace JARVIS
         public static bool useRecognition = true;             // If speech recognition should be used
         public static string wolframAppID = "LXA9LJ-3835YR8529";
 
-        private static DictationGrammar noiseGrammar;
+        //private static DictationGrammar noiseGrammar;
         private static DictationGrammar dictationGrammar;
         private static Grammar commandGrammar;
         private static Grammar activationGrammar;
@@ -55,15 +55,15 @@ namespace JARVIS
             dictationGrammar.Name = "Dictation Grammar";
             dictationGrammar.Enabled = false;
 
-            // Creates a grammar to find noise
-            noiseGrammar = new DictationGrammar("grammar:dictation#pronunciation");
-            noiseGrammar.Name = "Noise Grammar";
-            noiseGrammar.Enabled = true;
+            //// Creates a grammar to find noise
+            //noiseGrammar = new DictationGrammar("grammar:dictation#pronunciation");
+            //noiseGrammar.Name = "Noise Grammar";
+            //noiseGrammar.Enabled = true;
 
             // Creates a specific command grammar system to only understand a few phrases
             Choices commandChoices = new Choices();
             commandChoices.Add(new string[] {
-                "introduce",
+                "introduce yourself",
                 "open palemoon",
                 "open notepad",
                 "who is barack obama",
@@ -90,7 +90,7 @@ namespace JARVIS
             recognition.LoadGrammarAsync(activationGrammar);
             recognition.LoadGrammarAsync(dictationGrammar);
             recognition.LoadGrammarAsync(commandGrammar);
-            recognition.LoadGrammarAsync(noiseGrammar);
+            //recognition.LoadGrammarAsync(noiseGrammar);
 
             // Sets the recognition engine to the computer's default audio input device and starts recognising speech
             recognition.SetInputToDefaultAudioDevice();
@@ -148,19 +148,19 @@ namespace JARVIS
                     {
                         case "jarvis":
                             recognition.Grammars[recognition.Grammars.IndexOf(activationGrammar)].Enabled = false;
-                            recognition.Grammars[recognition.Grammars.IndexOf(noiseGrammar)].Enabled = true;
+                            //recognition.Grammars[recognition.Grammars.IndexOf(noiseGrammar)].Enabled = true;
                             recognition.Grammars[recognition.Grammars.IndexOf(commandGrammar)].Enabled = true;
                             recognition.Grammars[recognition.Grammars.IndexOf(dictationGrammar)].Enabled = false;
                             break;
                         case "let's talk":
                             recognition.Grammars[recognition.Grammars.IndexOf(activationGrammar)].Enabled = false;
-                            recognition.Grammars[recognition.Grammars.IndexOf(noiseGrammar)].Enabled = false;
+                            //recognition.Grammars[recognition.Grammars.IndexOf(noiseGrammar)].Enabled = false;
                             recognition.Grammars[recognition.Grammars.IndexOf(commandGrammar)].Enabled = false;
                             recognition.Grammars[recognition.Grammars.IndexOf(dictationGrammar)].Enabled = true;
                             break;
                         case "stop talking":
                             recognition.Grammars[recognition.Grammars.IndexOf(activationGrammar)].Enabled = true;
-                            recognition.Grammars[recognition.Grammars.IndexOf(noiseGrammar)].Enabled = true;
+                            //recognition.Grammars[recognition.Grammars.IndexOf(noiseGrammar)].Enabled = true;
                             recognition.Grammars[recognition.Grammars.IndexOf(commandGrammar)].Enabled = false;
                             recognition.Grammars[recognition.Grammars.IndexOf(dictationGrammar)].Enabled = false;
                             break;
