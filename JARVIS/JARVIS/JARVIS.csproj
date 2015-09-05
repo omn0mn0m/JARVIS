@@ -36,10 +36,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libraries\agsXMPP.dll</HintPath>
     </Reference>
-    <Reference Include="ChatterBotAPI, Version=1.1.4989.20315, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\ChatterBotAPI.dll</HintPath>
-    </Reference>
     <Reference Include="ejml-0.23">
       <HintPath>..\packages\Stanford.NLP.CoreNLP.3.5.1\lib\ejml-0.23.dll</HintPath>
     </Reference>
@@ -155,8 +151,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conversation\XMPPConversationList.cs" />
+    <Compile Include="frmVideo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVideo.Designer.cs">
+      <DependentUpon>frmVideo.cs</DependentUpon>
+    </Compile>
     <Compile Include="NeuralNetwork\Neuron.cs" />
-    <Compile Include="Util\Converser.cs" />
+    <Compile Include="Conversation\Converser.cs" />
     <Compile Include="frmJarvis.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,9 +173,12 @@
     <Compile Include="Util\OfficeManager.cs" />
     <Compile Include="Util\PCManager.cs" />
     <Compile Include="Util\SettingsScanner.cs" />
-    <Compile Include="Util\XMPPInteractor.cs" />
+    <Compile Include="Conversation\XMPPInteractor.cs" />
     <EmbeddedResource Include="frmJarvis.resx">
       <DependentUpon>frmJarvis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVideo.resx">
+      <DependentUpon>frmVideo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -199,12 +205,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Libraries\agsXMPP.dll" />
-    <Content Include="Libraries\ChatterBotAPI.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Accord Vision Face Tracking\Face tracking %28Camshift%29.csproj">
       <Project>{03cccd6c-ca56-4cae-a0a5-1c9660d9424b}</Project>
       <Name>Face tracking %28Camshift%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ChatterBotAPI\ChatterBotAPI.csproj">
+      <Project>{2e624962-f155-432c-a90a-e1ce75dee9ea}</Project>
+      <Name>ChatterBotAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\WAWrapper\WAWrapper.csproj">
       <Project>{adc1c97a-6edf-481d-9680-28d4a89747c2}</Project>
@@ -212,6 +221,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="AxWMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
@@ -254,6 +271,15 @@
       <VersionMinor>3</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>

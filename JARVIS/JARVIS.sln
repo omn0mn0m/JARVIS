@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JARVIS", "JARVIS\JARVIS.csproj", "{34A2411F-7C0C-4EB8-A93C-884F07E77A53}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Face tracking (Camshift)", "..\Accord Vision Face Tracking\Face tracking (Camshift).csproj", "{03CCCD6C-CA56-4CAE-A0A5-1C9660D9424B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WAWrapper", "..\WAWrapper\WAWrapper.csproj", "{ADC1C97A-6EDF-481D-9680-28D4A89747C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatterBotAPI", "..\ChatterBotAPI\ChatterBotAPI.csproj", "{2E624962-F155-432C-A90A-E1CE75DEE9EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,16 @@ Global
 		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{ADC1C97A-6EDF-481D-9680-28D4A89747C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{2E624962-F155-432C-A90A-E1CE75DEE9EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E624962-F155-432C-A90A-E1CE75DEE9EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E624962-F155-432C-A90A-E1CE75DEE9EA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2E624962-F155-432C-A90A-E1CE75DEE9EA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2E624962-F155-432C-A90A-E1CE75DEE9EA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2E624962-F155-432C-A90A-E1CE75DEE9EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E624962-F155-432C-A90A-E1CE75DEE9EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E624962-F155-432C-A90A-E1CE75DEE9EA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2E624962-F155-432C-A90A-E1CE75DEE9EA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2E624962-F155-432C-A90A-E1CE75DEE9EA}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
