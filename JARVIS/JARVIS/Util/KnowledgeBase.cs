@@ -70,6 +70,30 @@ namespace JARVIS.Util
             return wolframResult.ToString();
         }
 
+        //public string GetMost()
+        //{
+        //    StringBuilder wolframResult = new StringBuilder();
+        //    bool foundResult = false;
+
+        //    foreach (var pod in this.result.Pods)
+        //    {
+        //        foreach (var subpod in pod.SubPods)
+        //        {
+        //            if (string.IsNullOrEmpty(subpod.Title) /*&& !string.Equals() */ && !string.IsNullOrEmpty(subpod.PlainText))
+        //            {
+        //                wolframResult.AppendLine();
+        //                wolframResult.AppendLine();
+
+        //                wolframResult.Append(pod.Title);
+        //                wolframResult.AppendLine();
+        //                wolframResult.Append(subpod.PlainText);
+
+        //                foundResult = true;
+        //            }
+        //        }
+        //    }
+        //}
+
         public string GetAll()
         {
             StringBuilder wolframResult = new StringBuilder();

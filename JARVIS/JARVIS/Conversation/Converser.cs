@@ -46,6 +46,7 @@ namespace JARVIS.Util
 
             // Initialises the chatterbots
             chatterbot = FACTORY.Create(CLEVERBOT);
+            //chatterbot = FACTORY.Create(JABBERWACKY);
 
             // Creates the chat sessions for each bot
             chatSession = chatterbot.CreateSession();

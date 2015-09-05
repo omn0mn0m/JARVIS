@@ -73,7 +73,8 @@ namespace JARVIS
                 "powerpoint previous",
                 "in conclusion",
                 "respond to facebook",
-                "look at me"
+                "look at me",
+                "nevermind"
             });
             commandGrammar = new Grammar(commandChoices);
             commandGrammar.Name = "Command Grammar";
@@ -352,6 +353,9 @@ namespace JARVIS
                             FaceTracking.MainForm faceTracking = new FaceTracking.MainForm();
                             faceTracking.Show();
                             commandMessage = "Activating facial detection. Please select a camera";
+                            foundCommand = true;
+                            break;
+                        case "nevermind":
                             foundCommand = true;
                             break;
                         default:
