@@ -10,5 +10,5 @@ Current Commands:
 - restart
 - shut down
 - tell me why I'm awesome
- - drop the bass
- - launch missile
+- drop the bass
+- launch missile
