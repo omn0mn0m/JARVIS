@@ -6,6 +6,9 @@ Repository for past JARVIS attempts and any future tries
 - [pyttsx](https://pypi.python.org/pypi/pyttsx/)
 - [PyAudio](https://pypi.python.org/pypi/PyAudio/0.2.11/)
 - [ChatterBot](https://pypi.python.org/pypi/ChatterBot/)
+# Optional Dependencies
+- [python-cjson](https://pypi.python.org/pypi/python-cjson) - For speed of conversation
+  - [Microsoft Visual C++ 9.0](http://www.microsoft.com/en-us/download/details.aspx?id=44266) - For compiling python-cjson
 # Past Attempts
 This project first started at a PennApps hackathon in late 2013 where the code was written in basically two hours with minimal functionality.
 
