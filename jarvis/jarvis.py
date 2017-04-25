@@ -47,15 +47,14 @@ while (input != 'quit'):
                 print 'Verbs: {}'.format(verbs)
 
             if "open" in verbs:
-                executable = words[collect(tagged, 0).index('open') + 1] + ".exe"
-                print executable
+                executable = words[collect(tagged, 0).index('open') + 1]
 
                 if executable_paths.has_option('DEFAULT', executable):
                     filepath = executable_paths.get('DEFAULT', executable)
                 else:
                     filepath = actions.find_file(executable, "C:\\Program Files\\")
 
-                    if filepath != '':
+                    if filepath == '':
                         filepath = actions.find_file(executable, "C:\\Program Files (x86)\\")
                     
                 print filepath
