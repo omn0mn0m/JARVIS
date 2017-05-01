@@ -22,12 +22,6 @@ class Assistant(object):
             filters = ['chatterbot.filters.RepetitiveResponseFilter'],
             logic_adapters=[
                 {
-                    'import_path': 'chatterbot.logic.MathematicalEvaluation'
-                },
-                {
-                    'import_path': 'chatterbot.logic.TimeLogicAdapter'
-                },
-                {
                     'import_path': 'chatterbot.logic.BestMatch'
                 }
             ]
