@@ -26,7 +26,7 @@ def fb_worker(email, password):
 
 if __name__ == '__main__':
     use_speech = False
-    nlp_debug = True
+    nlp_debug = False
 
     jarvis = Assistant(use_speech)
     
@@ -44,34 +44,47 @@ if __name__ == '__main__':
                 
                 verbs = []
                 proper_nouns = []
+                pronouns = []
+
+                has_question_word = False
+                has_question = False
                 
                 for word in tagged:
                     if 'VB' in word[1]:
                         verbs.append(word[0].lower())
                     elif word[1] == 'NNP':
                         proper_nouns.append(word[0].lower())
+                    elif 'PRP' in word[1]:
+                        pronouns.append(word[0].lower())
+                    elif word[1][0] == 'W':
+                        has_question_word = True
+
+                has_question = has_question_word and len(pronouns) == 0
                         
                 if nlp_debug:
                     print 'Tags: {}'.format(tagged)
                     print 'Verbs: {}'.format(verbs)
-                    
-                if "open" in verbs:
-                    jarvis.say(filemanager.try_open_executable(words, tagged))
-                elif "respond" in verbs:
-                    if "facebook" in proper_nouns:
-                        if not login_creds.has_section('Facebook'):
-                            login_creds.add_section('Facebook')
-                            login_creds.set('Facebook', 'email', raw_input('Enter your FB email: '))
-                            login_creds.set('Facebook', 'password', raw_input('Enter your FB password: '))
 
-                        with open(resources_dir + 'login_creds.cfg', 'wb') as configfile:
-                            login_creds.write(configfile)
-
-                        fb_process = multiprocessing.Process(target = fb_worker, args = (login_creds.get('Facebook', 'email'), login_creds.get('Facebook', 'password')))
-                        fb_process.daemon = True
-                        fb_process.start()
+                if not has_question:    
+                    if "open" in verbs:
+                        jarvis.say(filemanager.try_open_executable(words, tagged))
+                    elif "respond" in verbs:
+                        if "facebook" in proper_nouns:
+                            if not login_creds.has_section('Facebook'):
+                                login_creds.add_section('Facebook')
+                                login_creds.set('Facebook', 'email', raw_input('Enter your FB email: '))
+                                login_creds.set('Facebook', 'password', raw_input('Enter your FB password: '))
+                                
+                                with open(resources_dir + 'login_creds.cfg', 'wb') as configfile:
+                                    login_creds.write(configfile)
+                                    
+                            fb_process = multiprocessing.Process(target = fb_worker, args = (login_creds.get('Facebook', 'email'), login_creds.get('Facebook', 'password')))
+                            fb_process.daemon = True
+                            fb_process.start()
+                    else:
+                        jarvis.respond(input)
                 else:
-                    jarvis.respond(input)
+                    jarvis.search_wolfram(input)
         except Exception as e:
             print e
             fb_process.terminate()
