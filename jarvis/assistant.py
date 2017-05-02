@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 import fbchat
+import wolframalpha
 
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from tts import TTS
 from stt import STT
+
+wolfram_client = wolframalpha.Client('LXA9LJ-3835YR8529')
 
 class Assistant(object):
 
@@ -30,6 +33,10 @@ class Assistant(object):
         
         self.chatbot.set_trainer(ChatterBotCorpusTrainer)
         self.chatbot.train("chatterbot.corpus.english.greetings")
+
+    def search_wolfram(self, input):
+        search_result = wolfram_client.query(input)
+        self.say(next(search_result.results).text)
 
         
     def say(self, message):

@@ -4,8 +4,6 @@ import multiprocessing
 import os
 import ConfigParser
 
-import wolframalpha
-
 from assistant import Assistant, Messenger
 
 resources_dir = 'resources\\'
@@ -29,8 +27,6 @@ def fb_worker(email, password):
 if __name__ == '__main__':
     use_speech = False
     nlp_debug = False
-
-    wolfram_client = wolframalpha.Client('LXA9LJ-3835YR8529')
 
     jarvis = Assistant(use_speech)
     
@@ -88,9 +84,7 @@ if __name__ == '__main__':
                     else:
                         jarvis.respond(input)
                 else:
-                    search_result = wolfram_client.query(input)
-                    
-                    jarvis.say(next(search_result.results).text)
+                    jarvis.search_wolfram(input)
         except Exception as e:
             print e
             fb_process.terminate()
