@@ -25,7 +25,10 @@ def fb_worker(email, password):
     messenger.listen()
     return
 
-def check_for_synonym(word, verblist):
+def check_for_word(word, verblist):
+    if word in verbs:
+        return True
+    
     target = wordnet.synsets(word)
     
     for synonyms in target:
@@ -78,9 +81,9 @@ if __name__ == '__main__':
                     print 'Verbs: {}'.format(verbs)
 
                 if not has_question:    
-                    if "open" in verbs or check_for_synonym('open', verbs):
+                    if check_for_word('open', verbs):
                         jarvis.say(filemanager.try_open_executable(words, tagged))
-                    elif "respond" in verbs or check_for_synonym('respond', verbs):
+                    elif check_for_word('respond', verbs):
                         if "facebook" in proper_nouns:
                             if not login_creds.has_section('Facebook'):
                                 login_creds.add_section('Facebook')
