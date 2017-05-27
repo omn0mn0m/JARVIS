@@ -29,7 +29,6 @@ class Assistant(object):
                 }
             ]
         )
-
         
         self.chatbot.set_trainer(ChatterBotCorpusTrainer)
         self.chatbot.train("chatterbot.corpus.english.greetings")
@@ -38,7 +37,6 @@ class Assistant(object):
         search_result = wolfram_client.query(input)
         self.say(next(search_result.results).text)
 
-        
     def say(self, message):
         self.tts.say(message)
 
@@ -66,12 +64,6 @@ class Messenger(fbchat.Client):
             storage_adapter = 'chatterbot.storage.JsonFileStorageAdapter',
             filters = ['chatterbot.filters.RepetitiveResponseFilter'],
             logic_adapters=[
-                {
-                    'import_path': 'chatterbot.logic.MathematicalEvaluation'
-                },
-                {
-                    'import_path': 'chatterbot.logic.TimeLogicAdapter'
-                },
                 {
                     'import_path': 'chatterbot.logic.BestMatch'
                 }

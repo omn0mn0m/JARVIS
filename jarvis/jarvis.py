@@ -5,6 +5,7 @@ import os
 import ConfigParser
 
 from assistant import Assistant, Messenger
+from nltk.corpus import wordnet
 
 resources_dir = 'resources\\'
 
@@ -24,6 +25,17 @@ def fb_worker(email, password):
     messenger.listen()
     return
 
+def check_for_synonym(word, verblist):
+    target = wordnet.synsets(word)
+    
+    for synonyms in target:
+        new_list = [str(x) for x in synonyms.lemma_names()]
+
+        if any(i in new_list for i in verblist):
+            return  True
+
+    return False
+        
 if __name__ == '__main__':
     use_speech = False
     nlp_debug = False
@@ -66,9 +78,9 @@ if __name__ == '__main__':
                     print 'Verbs: {}'.format(verbs)
 
                 if not has_question:    
-                    if "open" in verbs:
+                    if "open" in verbs or check_for_synonym('open', verbs):
                         jarvis.say(filemanager.try_open_executable(words, tagged))
-                    elif "respond" in verbs:
+                    elif "respond" in verbs or check_for_synonym('respond', verbs):
                         if "facebook" in proper_nouns:
                             if not login_creds.has_section('Facebook'):
                                 login_creds.add_section('Facebook')
@@ -81,6 +93,7 @@ if __name__ == '__main__':
                             fb_process = multiprocessing.Process(target = fb_worker, args = (login_creds.get('Facebook', 'email'), login_creds.get('Facebook', 'password')))
                             fb_process.daemon = True
                             fb_process.start()
+                            jarvis.say('Answering your Facebook messages.')
                     else:
                         jarvis.respond(input)
                 else:
