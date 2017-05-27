@@ -25,6 +25,7 @@ while True:
 
     # Display the resulting frame
     cv2.imshow('Video', frame)
+    cv2.moveWindow('Video', 0,0)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
