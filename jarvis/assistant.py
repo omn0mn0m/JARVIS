@@ -34,8 +34,12 @@ class Assistant(object):
         self.chatbot.train("chatterbot.corpus.english.greetings")
 
     def search_wolfram(self, input):
-        search_result = wolfram_client.query(input)
-        self.say(next(search_result.results).text)
+        try:
+            search_result = wolfram_client.query(input)
+            self.say(next(search_result.results).text)
+            return True
+        except:
+            return False
 
     def say(self, message):
         self.tts.say(message)

@@ -100,9 +100,13 @@ if __name__ == '__main__':
                     else:
                         jarvis.respond(input)
                 else:
-                    jarvis.search_wolfram(input)
+                    if not jarvis.search_wolfram(input):
+                        jarvis.respond(input)
         except Exception as e:
             print e
-            fb_process.terminate()
-            fb_process.join()
+            try:
+                fb_process.terminate()
+                fb_process.join()
+            except NameError:
+                pass
             break
