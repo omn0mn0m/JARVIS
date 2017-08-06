@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import fbchat
+from fbchat import Client
 import wolframalpha
 
 from chatterbot import ChatBot
@@ -56,12 +56,12 @@ class Assistant(object):
 
         return input
 
-class Messenger(fbchat.Client):
+class Messenger(Client):
 
     responding = True
     
-    def __init__(self, email, password, debug = False, user_agent = None):
-	fbchat.Client.__init__(self, email, password, debug, user_agent)
+    def __init__(self, email, password):
+	Client.__init__(self, email, password, logging_level = 50)
 
         self.chatbot = ChatBot(
             'FB JARVIS',
@@ -77,13 +77,13 @@ class Messenger(fbchat.Client):
         self.chatbot.set_trainer(ChatterBotCorpusTrainer)
         self.chatbot.train("chatterbot.corpus.english.greetings")
 		
-    def on_message_new(self, mid, author_id, message, metadata, recipient_id, thread_type):
-	self.markAsDelivered(recipient_id, mid)
-	self.markAsRead(recipient_id)
+    def onMessage(self, author_id, message, thread_id, thread_type, **kwargs):
+	self.markAsDelivered(author_id, thread_id)
+	self.markAsRead(author_id)
 	
-	if str(author_id) != str(self.uid):
-            if self.responding and (thread_type != 'group'):
-                self.send(recipient_id, 'JARVIS: {}'.format(self.chatbot.get_response(message)), thread_type)
+	if author_id != self.uid:
+            if self.responding and (thread_type != 'GROUP'):
+                self.sendMessage('JARVIS: {}'.format(self.chatbot.get_response(message)),  thread_id, thread_type)
         else:
             if message == "JARVIS start responding":
                 self.responding = True

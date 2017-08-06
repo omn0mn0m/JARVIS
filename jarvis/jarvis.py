@@ -97,6 +97,13 @@ if __name__ == '__main__':
                             fb_process.daemon = True
                             fb_process.start()
                             jarvis.say('Answering your Facebook messages.')
+                    elif check_for_word('stop', verbs):
+                        if "facebook" in proper_nouns:
+                            try:
+                                fb_process.terminate()
+                                fb_process.join()
+                            except NameError:
+                                pass
                     else:
                         jarvis.respond(input)
                 else:
