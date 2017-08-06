@@ -1,6 +1,8 @@
+
 import nltk
 import filemanager
 import multiprocessing
+import Queue
 import os
 import ConfigParser
 
@@ -19,11 +21,12 @@ else:
     login_creds.write(new_login_creds)
     new_login_creds.close()
     
-
+###################### Multiprocessing ###########################
 def fb_worker(email, password):
     messenger = Messenger(email, password)
     messenger.listen()
     return
+##################################################################
 
 def check_for_word(word, verblist):
     if word in verbs:
@@ -104,6 +107,8 @@ if __name__ == '__main__':
                                 fb_process.join()
                             except NameError:
                                 pass
+                    elif check_for_word('look', verbs):
+                        jarvis.say("Opening your camera.")
                     else:
                         jarvis.respond(input)
                 else:
@@ -116,4 +121,5 @@ if __name__ == '__main__':
                 fb_process.join()
             except NameError:
                 pass
+
             break
