@@ -1,6 +1,7 @@
 
 # JARVIS
 Repository for past JARVIS attempts and any future tries.
+
 # Dependencies
 - [Python 2.7](https://www.python.org/download/releases/2.7/)
 - [SpeechRecognition](https://pypi.python.org/pypi/SpeechRecognition/)
@@ -11,6 +12,7 @@ Repository for past JARVIS attempts and any future tries.
 - [NLTK](http://www.nltk.org/)
 - [OpenCV](http://opencv.org/)
 - [Spotipy](https://pypi.python.org/pypi/spotipy)
+
 # Current Functions
 - Machine learning conversation using [ChatterBot](https://pypi.python.org/pypi/ChatterBot/)
 - Speech recognition and speech synthesis
@@ -18,8 +20,10 @@ Repository for past JARVIS attempts and any future tries.
 - Opening programs by searching through Program Files directory
 - Facial Detection
 - Basic decision-making based off verb recognition from [NLTK](http://www.nltk.org/)
+
 # Optional Dependencies
 - [MongoDB](https://www.mongodb.com/download-center#community/)
+
 # Past Attempts
 This project first started at a PennApps hackathon in late 2013 where the code was written in basically two hours with minimal functionality.
 
