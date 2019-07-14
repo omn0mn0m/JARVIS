@@ -1,3 +1,4 @@
+
 # JARVIS
 Repository for past JARVIS attempts and any future tries.
 # Dependencies
@@ -6,6 +7,17 @@ Repository for past JARVIS attempts and any future tries.
 - [pyttsx](https://pypi.python.org/pypi/pyttsx/)
 - [PyAudio](https://pypi.python.org/pypi/PyAudio/0.2.11/)
 - [ChatterBot](https://pypi.python.org/pypi/ChatterBot/)
+- [fbchat](https://pypi.python.org/pypi/fbchat)
+- [NLTK](http://www.nltk.org/)
+- [OpenCV](http://opencv.org/)
+- [Spotipy](https://pypi.python.org/pypi/spotipy)
+# Current Functions
+- Machine learning conversation using [ChatterBot](https://pypi.python.org/pypi/ChatterBot/)
+- Speech recognition and speech synthesis
+- Facebook message answering using [fbchat](https://pypi.python.org/pypi/fbchat)
+- Opening programs by searching through Program Files directory
+- Facial Detection
+- Basic decision-making based off verb recognition from [NLTK](http://www.nltk.org/)
 # Optional Dependencies
 - [MongoDB](https://www.mongodb.com/download-center#community/)
 # Past Attempts
